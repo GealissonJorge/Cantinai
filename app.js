@@ -10,11 +10,27 @@ const admin = require('./routes/admin')
 const funcionario= require('./routes/funcionario')
 const cliente = require('./routes/cliente')
 //config
+//sessao
+app.use(session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+}))
+app.use(flash())
+//middlewares padrao de msg de feedback
+app.use((req, res, next)=>{
+    res.locals.success_msg = req.flash('success_msg')
+    res.locals.error_msg = req.flash('error_msg')
+    next()
+})
 //bodyParser
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 //handlebars
-app.engine("handlebars", handlebars.engine({ defaultLayout: "main" }))
+app.engine("handlebars", handlebars.engine({ defaultLayout: "main", runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true, //resolve problema de acessar o banco no handlebars, tava sendo negado
+}, }))
 app.set("view engine", "handlebars")
 //mongoose
 mongoose.Promise = global.Promise

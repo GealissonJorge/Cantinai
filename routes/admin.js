@@ -18,22 +18,45 @@ router.get('/atualizar', (req, res) => {
 })
 //Gerenciamneto de Produto
 router.get('/produto', (req, res) => {
-    res.render('admin/produto')
+    Produto.find().then((produtos) => {
+        res.render('admin/produto', {produtos: produtos})
+    }).catch((err) => {
+        req.flash('error_msg', 'Erro ao listar produtos')
+        res.redirect('/admin/produto')
+    })
 })
 router.get('/produto/add', (req, res) => {
     res.render('admin/addproduto')
 })
 router.post('/produto/nova', (req, res) => {
-    const novaCatergoria = {
-        descricao: req.body.descricao,
-        quantidade: req.body.qtd,
-        preco: req.body.valor
+    var erros= []
+    if(!req.body.descricao || typeof req.body.descricao == undefined || req.body.descricao == null){
+        erros.push({texto: 'Descrição obrigatória'})
     }
-    new Produto(novaCatergoria).save().then(() => {
-        console.log('Cadastrado com sucesso')
-    }).catch((err) => {
-        console.log('Erro ao cadastrar: ' + err)
-    })
+    if(!req.body.qtd || typeof req.body.qtd == undefined || req.body.qtd == null){
+        erros.push({texto: 'Quantidade obrigatória'})
+    }
+    if(!req.body.valor || typeof req.body.valor == undefined || req.body.valor == null){
+        erros.push({texto: 'Valor obrigatório'})
+    }
+    if(erros.length > 0){
+        res.render('admin/addproduto', {erros: erros})
+    }else{
+        const novoProduto = {
+            descricao: req.body.descricao,
+            quantidade: req.body.qtd,
+            preco: req.body.valor
+        }
+        new Produto(novoProduto).save().then(() => {
+            req.flash('success_msg', 'Produto cadastrado com sucesso')
+            res.redirect('/admin/produto')
+        }).catch((err) => {
+
+            req.flash('error_msg', 'Erro ao cadastrar')
+            console.log('Erro ao cadastrar: ' + err)
+            res.redirect('/admin/produto')
+        })
+}
 })
 
 //Gerenciamento de Usuário
