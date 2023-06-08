@@ -9,6 +9,8 @@ const path = require('path')
 const admin = require('./routes/admin')
 const funcionario= require('./routes/funcionario')
 const cliente = require('./routes/cliente')
+const qrmanagement = require('./routes/qrcode')
+
 //config
 //sessao
 app.use(session({
@@ -46,6 +48,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/admin', admin)
 app.use('/funcionario', funcionario)
 app.use('/cliente', cliente)
+app.use('/qrcode', qrmanagement)
 app.get('/', (req, res) => {
     res.render('index')
 })
