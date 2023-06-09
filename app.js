@@ -36,7 +36,7 @@ app.engine("handlebars", handlebars.engine({ defaultLayout: "main", runtimeOptio
 app.set("view engine", "handlebars")
 //mongoose
 mongoose.Promise = global.Promise
-mongoose.connect('mongodb://0.0.0.0:27017/cantinai', 
+mongoose.connect('mongodb://localhost:27017/cantinai', 
 {useNewUrlParser: true, useUnifiedTopology: true}).then(()=> {
     console.log('MongoDB conectado')
 }).catch((err)=> {
