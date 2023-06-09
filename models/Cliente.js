@@ -23,11 +23,12 @@ const Cliente = new Schema({
     },
     Carteira: {
         type : Number,
-        required : true
+        required : true,
+        default: 0
     },
     date: {
         type : Date,
         default : Date.now()
     }
 })
-mongoose.model('Administradores', Administrador)
+mongoose.model('Clientes', Cliente)

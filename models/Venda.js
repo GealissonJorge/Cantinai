@@ -5,10 +5,6 @@ const Venda = new Schema({
         type: Number,
         required: true
     },
-    taxa:{
-        type: Number,
-        required: true
-    },
     horario:{
         type: Date,
         default: Date.now()

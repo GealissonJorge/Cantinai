@@ -1,0 +1,19 @@
+<h2>Gerenciar Administradores</h2>
+<hr>
+<a href="/admin/usuarios/addadministrador"><button class="btn btn-success">Adicionar Administrador</button></a>
+{{#each administradores}}
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5>{{nome}}</h5>
+            <p>CPF: {{cpf}}</p>
+            <p>Email: {{email}}</p>
+            <p>Telefone: {{telefone}}</p>
+            <p>Endereço: {{endereco}}</p>
+            <p>Data de criação: {{date}}</p>
+            <p>Tipo: Administradores</p>           
+            <a href="/admin/produto/editar/{{id}}"><button class="btn btn-warning">Editar</button></a>
+            <a href="/admin/produto/deletar/{{id}}"><button class="btn btn-danger">Deletar</button></a>
+        </div>
+    </div>
+{{else}}    
+{{/each}}

@@ -21,7 +21,7 @@ const Administrador = new Schema({
         type : String,
         required : true
     },
-    Endereço: {
+    endereco: {
         type : String,
         required : true
     },

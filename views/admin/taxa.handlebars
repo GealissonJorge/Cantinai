@@ -1,5 +1,12 @@
 <h2>Gerenciar Taxa</h2>
-<label for="taxa">A taxa atual é VALOR o quilo, novo valor:</label>
-<input type="number" name="taxa" id="taxa">
-<hr>
-<a href="/admin/produto/add"><button class="btn btn-success">Adicionar</button></a>
+{{#each taxas}}
+<label for="taxa">A taxa atual é R$ {{taxa}} o quilo</label>
+{{else}}
+{{/each}}
+<form action="/admin/taxa/nova" method="POST">
+<label for="taxa">Nova taxa:</label>
+    <input type="number" name="taxa" id="taxa">
+    <button class="btn btn-success">Atualizar</button>
+</form>
+
+

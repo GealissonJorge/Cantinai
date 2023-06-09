@@ -1,12 +1,19 @@
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
+const { route } = require('./qrcode')
 require('../models/Produto')
 const Produto = mongoose.model('Produtos')
 require('../models/Funcionario')
 const Funcionario = mongoose.model('Funcionarios')
 require('../models/Administrador')
 const Administrador = mongoose.model('Administradores')
+require('../models/Cliente')
+const Cliente = mongoose.model('Clientes')
+require('../models/Venda')
+const Venda = mongoose.model('Vendas')
+require('../models/Taxa')
+const Taxa = mongoose.model('Taxas')
 router.get('/', (req, res) => {
     res.render('admin/administrador')
 })
@@ -60,51 +67,153 @@ router.post('/produto/nova', (req, res) => {
 })
 
 //Gerenciamento de Usuário
-router.get('/usuarios', (req, res) => {
-    res.render('admin/usuarios')
+router.get('/clientes', (req, res) => {
+    Cliente.find().then((clientes) => {
+        res.render('admin/clientes', {clientes: clientes})
+    }).catch((err) => {
+        req.flash('error_msg', 'Erro ao listar usuários')
+        res.redirect('/admin/clientes')
+    })    
+
 })
+router.get('/funcionarios', (req, res) => {
+    Funcionario.find().then((funcionarios) => {
+        res.render('admin/funcionarios', {funcionarios: funcionarios})
+    }).catch((err) => {
+        req.flash('error_msg', 'Erro ao listar funcionários')
+        res.redirect('/admin/funcionarios')
+    })
+})
+router.get('/administradores', (req, res) => {
+    Administrador.find().then((administradores) => {
+        res.render('admin/administradores', {administradores: administradores})
+    }).catch((err) => {
+        req.flash('error_msg', 'Erro ao listar administradores')
+        res.redirect('/admin/administradores')
+    })
+})
+
+
 router.get('/usuarios/addfuncionario', (req, res) => {
     res.render('admin/addfuncionario')
 })
 router.post('/funcionario/novo', (req, res) => {
-    const novoFuncionario = {
-        nome: req.body.nome,
-        cpf: req.body.cpf,
-        email: req.body.email,
-        telefone: req.body.telefone,
-        senha: req.body.senha,
-        Endereço: req.body.endereco
+    var erros=[]
+    if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
+        erros.push({texto: 'Nome obrigatório'})
     }
-    new Funcionario(novoFuncionario).save().then(() => {
-        console.log('Cadastrado com sucesso')
-    }).catch((err) => {
-        console.log('Erro ao cadastrar: ' + err)
-    })
+    if(!req.body.cpf || typeof req.body.cpf == undefined || req.body.cpf == null){
+        erros.push({texto: 'CPF obrigatório'})
+    }
+    if(!req.body.email || typeof req.body.email == undefined || req.body.email == null){
+        erros.push({texto: 'Email obrigatório'})
+    }
+    if(!req.body.telefone || typeof req.body.telefone == undefined || req.body.telefone == null){
+        erros.push({texto: 'Telefone obrigatório'})
+    }
+    if(!req.body.senha || typeof req.body.senha == undefined || req.body.senha == null){
+        erros.push({texto: 'Senha obrigatória'})
+    }
+    if(!req.body.endereco || typeof req.body.endereco == undefined || req.body.endereco == null){
+        erros.push({texto: 'Endereço obrigatório'})
+    }
+    if(erros.length > 0){
+        res.render('admin/addfuncionario', {erros: erros})
+    }else{
+        const novoFuncionario = {
+            nome: req.body.nome,
+            cpf: req.body.cpf,
+            email: req.body.email,
+            telefone: req.body.telefone,
+            senha: req.body.senha,
+            endereco: req.body.endereco
+        }
+        new Funcionario(novoFuncionario).save().then(() => {
+            req.flash('success_msg', 'Funcionário cadastrado com sucesso')
+            res.redirect('/admin/funcionarios')
+            console.log('Cadastrado com sucesso')
+        }).catch((err) => {
+            req.flash('error_msg', 'Erro ao cadastrar')
+            console.log('Erro ao cadastrar: ' + err)
+        })
+    }
 })
 
 router.get('/usuarios/addadministrador', (req, res) => {
     res.render('admin/addadministrador')
 })
 router.post('/administrador/novo', (req, res) => {
-    const novoAdministrador = {
-        nome: req.body.nome,
-        cpf: req.body.cpf,
-        email: req.body.email,
-        telefone: req.body.telefone,
-        senha: req.body.senha,
-        Endereço: req.body.endereco
+    var erros= []
+    if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
+        erros.push({texto: 'Nome obrigatório'})
     }
-    new Administrador(novoAdministrador).save().then(() => {
-        console.log('Cadastrado com sucesso')
-    }).catch((err) => {
-        console.log('Erro ao cadastrar: ' + err)
-    })
+    if(!req.body.cpf || typeof req.body.cpf == undefined || req.body.cpf == null){
+        erros.push({texto: 'CPF obrigatório'})
+    }
+    if(!req.body.email || typeof req.body.email == undefined || req.body.email == null){
+        erros.push({texto: 'Email obrigatório'})
+    }
+    if(!req.body.telefone || typeof req.body.telefone == undefined || req.body.telefone == null){
+        erros.push({texto: 'Telefone obrigatório'})
+    }
+    if(!req.body.senha || typeof req.body.senha == undefined || req.body.senha == null){
+        erros.push({texto: 'Senha obrigatória'})
+    }
+    if(!req.body.endereco || typeof req.body.endereco == undefined || req.body.endereco == null){
+        erros.push({texto: 'Endereço obrigatório'})
+    }
+    if(erros.length > 0){
+        res.render('admin/addadministrador', {erros: erros})
+    }else{
+        const novoAdministrador = {
+            nome: req.body.nome,
+            cpf: req.body.cpf,
+            email: req.body.email,
+            telefone: req.body.telefone,
+            senha: req.body.senha,
+            endereco: req.body.endereco
+        }
+        new Administrador(novoAdministrador).save().then(() => {
+            req.flash('success_msg', 'Administrador cadastrado com sucesso')
+            res.redirect('/admin/administradores')
+            console.log('Cadastrado com sucesso')
+        }).catch((err) => {
+            req.flash('error_msg', 'Erro ao cadastrar')
+            req.redirect('/admin/administradores')
+            console.log('Erro ao cadastrar: ' + err)
+        })
+    }
+    
 })
 //gerenciar taxa
 router.get('/taxa', (req, res) => {
-    res.render('admin/taxa')
+    Taxa.find().then((taxas) => {
+        res.render('admin/taxa', {taxas: taxas})
+    }).catch((err) => {
+        req.flash('error_msg', 'Erro ao listar taxa')
+        res.redirect('/admin/taxa')
+    })
 })
-
+router.post('/taxa/nova', (req, res) => {
+    var erros = []
+    if(!req.body.taxa || typeof req.body.taxa == undefined || req.body.taxa == null || req.body.taxa < 0){
+        erros.push({texto: 'Taxa obrigatória'})
+    }
+    if(erros.length > 0){
+        res.render('admin/taxa', {erros: erros})
+    }else{
+        const novaTaxa = {
+            taxa: req.body.taxa
+        }
+        new Taxa(novaTaxa).save().then(() => {
+            req.flash('success_msg', 'Taxa cadastrada com sucesso')
+            res.redirect('/admin/taxa')
+        }).catch((err) => {
+            req.flash('error_msg', 'Erro ao cadastrar taxa')
+            res.redirect('/admin/taxa')
+        })
+    }
+})
 
 
 //adicionar rota para editar um usuario
