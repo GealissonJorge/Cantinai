@@ -10,7 +10,7 @@ const admin = require('./routes/admin')
 const funcionario= require('./routes/funcionario')
 const cliente = require('./routes/cliente')
 const qrmanagement = require('./routes/qrcode')
-
+require('dotenv').config()
 //config
 //sessao
 app.use(session({
@@ -36,7 +36,7 @@ app.engine("handlebars", handlebars.engine({ defaultLayout: "main", runtimeOptio
 app.set("view engine", "handlebars")
 //mongoose
 mongoose.Promise = global.Promise
-mongoose.connect('mongodb://0.0.0.0:27017/cantinai', 
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://0.0.0.0:27017/cantinai', 
 {useNewUrlParser: true, useUnifiedTopology: true}).then(()=> {
     console.log('MongoDB conectado')
 }).catch((err)=> {
@@ -53,6 +53,6 @@ app.get('/', (req, res) => {
     res.render('index')
 })
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log('listening on port 3000')
 })
