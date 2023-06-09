@@ -21,4 +21,9 @@ router.post("/scan", (req, res) => {
         res.render("qrcode/scan", { src });
     });
 });
+router.get("/leitor", (req, res) => {
+    res.render("qrcode/leitor");
+})
+
+
 module.exports = router
