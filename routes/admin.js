@@ -163,7 +163,7 @@ router.post('/usuarios/deletecliente/:id', (req, res) => {
 })
 //Gerenciamento de Usuário
 router.get('/clientes', (req, res) => {
-    Cliente.find().then((clientes) => {
+    Cliente.find().lean().populate('carteira').sort({date: 'desc'}).then((clientes) => {
         res.render('admin/clientes', {clientes: clientes})
     }).catch((err) => {
         req.flash('error_msg', 'Erro ao listar usuários')

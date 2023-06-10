@@ -22,9 +22,9 @@ const Cliente = new Schema({
         required : true
     },
     carteira: {
-        type : Number,
-        required : true,
-        default: 0
+        type : Schema.Types.ObjectId,
+        ref: 'Carteiras',
+        required : true
     },
     date: {
         type : Date,

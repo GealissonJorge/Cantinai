@@ -9,8 +9,7 @@
             <p>CPF: {{cpf}}</p>
             <p>Email: {{email}}</p>
             <p>Telefone: {{telefone}}</p>
-            <p>Carteira: {{carteira}}</p>
-            <p>Tipo: Cliente</p>
+            <p>Carteira: {{carteira.saldo}}</p>
              <p>Data de criação: {{date}}</p>          
             <a href="/admin/usuarios/editcliente/{{id}}"><button class="btn btn-warning">Editar</button></a>
             <form action="/admin/usuarios/deletecliente/{{id}}" method="POST" class="mt-4">

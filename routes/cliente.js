@@ -3,6 +3,8 @@ const router = express.Router()
 const mongoose = require('mongoose')
 require('../models/Cliente')
 const Cliente = mongoose.model('Clientes')
+require('../models/Carteira')
+const Carteira = mongoose.model('Carteiras')
 router.get('/', (req, res) => {
     res.render('cliente/cliente')
 })
@@ -27,15 +29,24 @@ router.post('/cadastro/novo', (req, res) => {
         erros.push({texto: 'Senha obrigatório'})
     }
     if(erros.length > 0){
-        //console.log(erros)
         res.render('cliente/cadastro', {erros: erros})
     }else{
+        var idcarteira = new mongoose.Types.ObjectId()
+        new Carteira().save().then((carteira) => {
+            idcarteira = carteira._id
+            req.flash('success_msg', 'Carteira cadastrada com sucesso ')
+        }).catch((err) => {
+            req.flash('error_msg', 'Erro ao cadastrar')
+            console.log('Erro ao cadastrar: ' + err)
+
+        })
         const novoCliente = {
             nome: req.body.nome,
             cpf: req.body.cpf,
             email: req.body.email,
             telefone: req.body.telefone,
             senha: req.body.senha,
+            carteira: idcarteira
         }
         new Cliente(novoCliente).save().then(() => {
             req.flash('success_msg', 'Cliente cadastrado com sucesso')
