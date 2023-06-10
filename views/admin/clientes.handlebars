@@ -9,12 +9,15 @@
             <p>CPF: {{cpf}}</p>
             <p>Email: {{email}}</p>
             <p>Telefone: {{telefone}}</p>
-            <p>Carteira: {{Carteira}}</p>
+            <p>Carteira: {{carteira}}</p>
             <p>Tipo: Cliente</p>
              <p>Data de criação: {{date}}</p>          
-            <a href="/admin/produto/editar/{{id}}"><button class="btn btn-warning">Editar</button></a>
-            <a href="/admin/produto/deletar/{{id}}"><button class="btn btn-danger">Deletar</button></a>
+            <a href="/admin/usuarios/editcliente/{{id}}"><button class="btn btn-warning">Editar</button></a>
+            <form action="/admin/usuarios/deletecliente/{{id}}" method="POST" class="mt-4">
+                <button class="btn btn-danger">Deletar</button>
+            </form>
         </div>
     </div>
-{{else}}    
+{{else}} 
+    <h5 class="mt-4"> Nenhum cliente cadastrado</h5>   
 {{/each}}

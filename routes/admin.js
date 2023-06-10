@@ -112,8 +112,55 @@ router.post('/produto/deletar/:id', (req, res) => {
         res.redirect('/admin/produto')
     })
 })
-
-
+router.get('/usuarios/editcliente/:id', (req, res) => {
+    Cliente.findOne({_id: req.params.id}).then((cliente) => {
+        res.render('admin/editcliente', {cliente: cliente})
+    }).catch((err) => {
+        req.flash('error_msg', 'Erro ao listar usuários')
+        res.redirect('/admin/clientes')
+    })
+})
+router.post('/usuarios/editcliente/:id', (req, res) => {
+    Cliente.findOne({_id: req.params.id}).then((cliente) => {
+        var erros=[]
+        if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
+            erros.push({texto: 'Nome obrigatório'})
+        }
+        if(!req.body.cpf || typeof req.body.cpf == undefined || req.body.cpf == null){
+            erros.push({texto: 'CPF obrigatório'})
+        }
+        if(!req.body.email || typeof req.body.email == undefined || req.body.email == null){
+            erros.push({texto: 'Email obrigatório'})
+        }
+        if(!req.body.telefone || typeof req.body.telefone == undefined || req.body.telefone == null){
+            erros.push({texto: 'Telefone obrigatório'})
+        }
+        if(!req.body.senha || typeof req.body.senha == undefined || req.body.senha == null){
+            erros.push({texto: 'Senha obrigatória'})
+        }
+        if(erros.length > 0){
+            res.render('admin/editcliente', {cliente: cliente, erros: erros})
+        }else{
+            cliente.nome = req.body.nome
+            cliente.email = req.body.email
+            cliente.telefone = req.body.telefone
+            cliente.save().then(() => {
+                req.flash('success_msg', 'Cliente atualizado com sucesso')
+                res.redirect('/admin/clientes')
+            })
+        }
+    })
+})
+router.post('/usuarios/deletecliente/:id', (req, res) => {
+    Cliente.deleteOne({_id: req.params.id}).then(() => {
+        req.flash('success_msg', 'Cliente excluído com sucesso')
+        res.redirect('/admin/clientes')
+    }).catch((err) => {
+        req.flash('error_msg', 'Erro ao excluir')
+        console.log('Erro ao excluir: ' + err)
+        res.redirect('/admin/clientes')
+    })
+})
 //Gerenciamento de Usuário
 router.get('/clientes', (req, res) => {
     Cliente.find().then((clientes) => {
@@ -124,6 +171,8 @@ router.get('/clientes', (req, res) => {
     })    
 
 })
+
+
 router.get('/funcionarios', (req, res) => {
     Funcionario.find().then((funcionarios) => {
         res.render('admin/funcionarios', {funcionarios: funcionarios})

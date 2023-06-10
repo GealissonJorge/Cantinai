@@ -21,7 +21,7 @@ const Cliente = new Schema({
         type : String,
         required : true
     },
-    Carteira: {
+    carteira: {
         type : Number,
         required : true,
         default: 0
