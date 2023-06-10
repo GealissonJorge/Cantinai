@@ -1,0 +1,21 @@
+<h3>Editar Funcionário</h3>
+<div class="card">
+    <div class="card-body">
+        <form action="/admin/usuarios/editfuncionario/{{funcionario._id}}" method="POST">
+            <label for="nome">Nome</label>
+                <input type="text" name="nome" id="nome" placeholder="Nome" class="form-control" value="{{funcionario.nome}}">
+            <label for="cpf">CPF</label>
+                <input type="text" name="cpf" id="cpf" placeholder="xxx.xxx.xxx-xx" class="form-control" value="{{funcionario.cpf}}">
+            <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="E-mail" class="form-control" value="{{funcionario.email}}">
+            <label for="telefone">Telefone</label>
+                <input type="text" name="telefone" id="telefone" placeholder="(00) 00000-0000" class="form-control" value="{{funcionario.telefone}}">
+            <label for="endereco">Endereço</label>
+                <input type="text" name="endereco" id="endereco" placeholder="" class="form-control" value="{{funcionario.endereco}}">
+            <label for="senha">Senha</label>
+                <input type="password" name="senha" id="senha" placeholder="" class="form-control" value="{{funcionario.senha}}">
+            <hr>
+            <button class="btn btn-success">Atualizar Funcionario</button>
+        </form>
+    </div>
+</div>

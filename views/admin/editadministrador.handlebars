@@ -1,0 +1,21 @@
+<h3>Novo Administrador</h3>
+<div class="card">
+    <div class="card-body">
+        <form action="/admin/usuarios/editadministrador/{{administrador.id}}" method="POST">
+            <label for="nome">Nome</label>
+                <input type="text" name="nome" id="nome" placeholder="Nome" class="form-control" value="{{administrador.nome}}">
+            <label for="cpf">CPF</label>
+                <input type="text" name="cpf" id="cpf" placeholder="xxx.xxx.xxx-xx" class="form-control" value="{{administrador.cpf}}">
+            <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="E-mail" class="form-control" value="{{administrador.email}}">
+            <label for="telefone">Telefone</label>
+                <input type="tel" name="telefone" id="telefone" placeholder="(00) 00000-0000" class="form-control" value="{{administrador.telefone}}">
+            <label for="endereco">Endereço</label>
+                <input type="text" name="endereco" id="endereco" placeholder="" class="form-control" value="{{administrador.endereco}}">
+            <label for="senha">Senha</label>
+                <input type="password" name="senha" id="senha" placeholder="" class="form-control" value="{{administrador.senha}}">
+            <hr>
+            <button class="btn btn-success">Atualizar Administrador</button>
+        </form>
+    </div>
+</div>

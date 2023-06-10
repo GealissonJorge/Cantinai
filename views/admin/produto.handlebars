@@ -9,9 +9,13 @@
             <p class="card-text">Quantidade: {{quantidade}} </p>
             <p class="card-text">Preço: {{preco}} </p>
             <p>Data de criação: {{date}}</p>
-            <a href="/admin/produto/editar/{{id}}"><button class="btn btn-warning">Editar</button></a>
-            <a href="/admin/produto/deletar/{{id}}"><button class="btn btn-danger">Deletar</button></a>
+            <a href="/admin/produto/edit/{{id}}"><button class="btn btn-warning">Editar</button></a>
+            <form action="/admin/produto/deletar/{{id}}" method="POST" class="mt-4">
+                <button class="btn btn-danger">Deletar</button>
+            </form>
+            
         </div>
     </div>
-{{else}}    
+{{else}}
+<h5 class="mt-4">Nenhum produto cadastrado</h5>    
 {{/each}}
