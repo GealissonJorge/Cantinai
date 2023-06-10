@@ -417,16 +417,34 @@ router.post('/taxa/nova', (req, res) => {
     if(erros.length > 0){
         res.render('admin/taxa', {erros: erros})
     }else{
-        const novaTaxa = {
-            taxa: req.body.taxa
-        }
-        new Taxa(novaTaxa).save().then(() => {
-            req.flash('success_msg', 'Taxa cadastrada com sucesso')
-            res.redirect('/admin/taxa')
-        }).catch((err) => {
-            req.flash('error_msg', 'Erro ao cadastrar taxa')
-            res.redirect('/admin/taxa')
+        Taxa.count().then((count) => {
+            if(count==0){
+                var novaTaxa = {
+                    taxa: req.body.taxa
+                }
+                new Taxa(novaTaxa).save().then(() => {
+                    req.flash('success_msg', 'Taxa cadastrada com sucesso')
+                    res.redirect('/admin/taxa')
+                }).catch((err) => {
+                    req.flash('error_msg', 'Erro ao cadastrar taxa')
+                    res.redirect('/admin/taxa')
+                })
+            }else{
+                Taxa.findOne({}).then((taxa) => {
+                    console.log(taxa.taxa)
+                    taxa.taxa= req.body.taxa
+                    taxa.save().then(() => {
+                        req.flash('success_msg', 'Taxa atualizada com sucesso')
+                        res.redirect('/admin/taxa')
+                    }).catch((err) => {
+                        req.flash('error_msg', 'Erro ao atualizar taxa')
+                        res.redirect('/admin/taxa')
+                    })
+                })
+
+            }
         })
+
     }
 })
 

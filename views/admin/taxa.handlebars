@@ -4,8 +4,10 @@
 {{/each}}
 <h2>Gerenciar Taxa</h2>
 {{#each taxas}}
-<label for="taxa">A taxa atual é R$ {{taxa}} o quilo</label>
+<h5>A taxa atual é R$ {{taxa}} o quilo</h5>
+<input type="hidden" name="valor" id="valor" value="{{taxa}}">
 {{else}}
+<h5>Nenhuma taxa cadastrada</h5>
 {{/each}}
 <form action="/admin/taxa/nova" method="POST">
 <label for="taxa">Nova taxa:</label>
