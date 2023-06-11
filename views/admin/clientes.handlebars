@@ -9,10 +9,10 @@
             <p>CPF: {{cpf}}</p>
             <p>Email: {{email}}</p>
             <p>Telefone: {{telefone}}</p>
-            <p>Carteira: {{carteira.saldo}}</p>
+            <p ste>Carteira: {{carteira.saldo}}</p>
              <p>Data de criação: {{date}}</p>          
-            <a href="/admin/usuarios/editcliente/{{id}}"><button class="btn btn-warning">Editar</button></a>
-            <form action="/admin/usuarios/deletecliente/{{id}}" method="POST" class="mt-4">
+            <a href="/admin/usuarios/editcliente/{{_id}}"><button class="btn btn-warning">Editar</button></a>
+            <form action="/admin/usuarios/deletecliente/{{_id}}" method="POST" class="mt-4">
                 <button class="btn btn-danger">Deletar</button>
             </form>
         </div>

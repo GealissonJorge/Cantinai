@@ -31,15 +31,10 @@ router.post('/cadastro/novo', (req, res) => {
     if(erros.length > 0){
         res.render('cliente/cadastro', {erros: erros})
     }else{
-        var idcarteira = new mongoose.Types.ObjectId()
-        new Carteira().save().then((carteira) => {
-            idcarteira = carteira._id
-            req.flash('success_msg', 'Carteira cadastrada com sucesso ')
-        }).catch((err) => {
-            req.flash('error_msg', 'Erro ao cadastrar')
-            console.log('Erro ao cadastrar: ' + err)
+    var idcarteira = new mongoose.Types.ObjectId();
 
-        })
+    new Carteira().save().then((carteira) => {
+        idcarteira = carteira._id
         const novoCliente = {
             nome: req.body.nome,
             cpf: req.body.cpf,
@@ -48,6 +43,7 @@ router.post('/cadastro/novo', (req, res) => {
             senha: req.body.senha,
             carteira: idcarteira
         }
+
         new Cliente(novoCliente).save().then(() => {
             req.flash('success_msg', 'Cliente cadastrado com sucesso')
             res.redirect('/cliente')
@@ -55,7 +51,12 @@ router.post('/cadastro/novo', (req, res) => {
             req.flash('error_msg', 'Erro ao cadastrar')
             console.log('Erro ao cadastrar: ' + err)
             res.redirect('/cliente/cadastro')
+        });
+        }).catch((err) => {
+            req.flash('error_msg', 'Erro ao cadastrar')
+            console.log('Erro ao cadastrar: ' + err)
         })
+
     }
 })
 module.exports = router
