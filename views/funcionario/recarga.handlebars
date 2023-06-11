@@ -1,5 +1,18 @@
+
+{{#each erros}}
+    <div class="alert alert-danger">{{texto}}</div>
+{{else}}
+{{/each}}
 <h3>Recarga</h3>
-<label for="cpf">CPF</label>
-    <input type="text"  name="cpf" id="cpf" placeholder="xxx.xxx.xxx-xx" >
-<label for="valor">Valor</label>
-    <input type="text"  name="valor" id="valor" placeholder="R$">
+
+<div class="card">
+    <div class="card-body">
+        <form action="/funcionario/recarga" method="POST">
+            <label for="cpf">CPF</label>
+                <input type="text"  name="cpf" id="cpf" placeholder="xxx.xxx.xxx-xx"class="form-control" >
+            <label for="valor R$" >Valor</label>
+                <input type="text"  name="valor" id="valor" class="form-control">
+            <button class="btn btn-success mt-4">Adicionar</button>
+        </form>    
+    </div>    
+</div>
