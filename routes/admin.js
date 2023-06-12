@@ -15,7 +15,7 @@ const Venda = mongoose.model('Vendas')
 require('../models/Taxa')
 const Taxa = mongoose.model('Taxas')
 const {eAdmin} = require('../helpers/eAdmin')//bastar colocar , eAdmin, nas paginas que so admin podem visualizar
-
+const bcrypt = require("bcryptjs")
 router.get('/', eAdmin ,(req, res) => {
     res.render('admin/administrador')
 })
@@ -322,23 +322,35 @@ router.post('/administrador/novo', (req, res) => {
     if(erros.length > 0){
         res.render('admin/addadministrador', {erros: erros})
     }else{
-        const novoAdministrador = {
+
+        const novoAdministrador = new Administrador({
             nome: req.body.nome,
             cpf: req.body.cpf,
             email: req.body.email,
             telefone: req.body.telefone,
             senha: req.body.senha,
             endereco: req.body.endereco
-        }
-        new Administrador(novoAdministrador).save().then(() => {
-            req.flash('success_msg', 'Administrador cadastrado com sucesso')
-            res.redirect('/admin/administradores')
-            console.log('Cadastrado com sucesso')
-        }).catch((err) => {
-            req.flash('error_msg', 'Erro ao cadastrar')
-            req.redirect('/admin/administradores')
-            console.log('Erro ao cadastrar: ' + err)
         })
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(novoAdministrador.senha, salt, (erro, hash) => {
+                if(erro){
+                    req.flash("error_msg","erro ao criptografar")
+                    res.redirect("/")
+                }
+            
+            novoAdministrador.senha = hash
+            novoAdministrador.save().then(() => {
+                req.flash('success_msg', 'Administrador cadastrado com sucesso')
+                res.redirect('/admin/administradores')
+            }).catch((err) => {
+                req.flash('error_msg', 'Erro ao cadastrar')
+                console.log('Erro ao cadastrar: ' + err)
+                res.redirect('/admin/administradores')
+            })
+        })
+        })
+
+
     }
     
 })

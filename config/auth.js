@@ -16,7 +16,7 @@ module.exports = function(passport){
 
         Cliente.findOne({email: email}).lean().then((cliente)=>{
             if(!cliente){
-                return done(null,false,{message:"conta nao existe"})
+                return done(null,false,{message:"conta nao existe cliente"})
             }
             bcrypt.compare(senha,cliente.senha,(erro,batem)=>{
                 if(batem){
@@ -25,15 +25,32 @@ module.exports = function(passport){
                     return done(null, false,{message: "senha incorreta"})
                 }
             })
+        
         })
 
+    }))
+    passport.use(new localStrategy({usernameField:'email', passwordField:"senha"},(email,senha,done)=>{
+        Administrador.findOne({email: email}).lean().then((administrador)=>{
+            if(!administrador){
+                return done(null,false,{message:"conta nao existe adminis"})
+            }
+            bcrypt.compare(senha,administrador.senha,(erro,batem)=>{
+                if(batem){
+                    return done(null,administrador)
+                }else{
+                    return done(null, false,{message: "senha incorreta admin"})
+                }
+            })
+        }) 
     }))
 
     passport.serializeUser((cliente,done)=>{
         done(null,cliente)
     })
 
-    
+    passport.serializeUser((administrador,done)=>{
+        done(null,administrador)  
+    })
    // passport.deserializeUser((id,done)=>{
    //     Usuario.findById(id,(err,usuario)=>{
    //         done(err,usuario)
@@ -47,4 +64,12 @@ module.exports = function(passport){
             return done (null,false,{message:'algo deu errado'})
         })
     })
+    passport.deserializeUser((id,done)=>{
+        Administrador.findById(id).then((administrador)=>{
+           return done(null,administrador)
+        }).catch((err)=>{
+            return done (null,false,{message:'algo deu errado'})
+        })
+    })
+
 }
