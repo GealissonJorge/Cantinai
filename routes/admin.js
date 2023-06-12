@@ -14,17 +14,19 @@ require('../models/Venda')
 const Venda = mongoose.model('Vendas')
 require('../models/Taxa')
 const Taxa = mongoose.model('Taxas')
-router.get('/', (req, res) => {
+const {eAdmin} = require('../helpers/eAdmin')//bastar colocar , eAdmin, nas paginas que so admin podem visualizar
+
+router.get('/', eAdmin ,(req, res) => {
     res.render('admin/administrador')
 })
-router.get('/venda', (req, res) => {
+router.get('/venda', eAdmin ,(req, res) => {
     res.send('realizando venda')
 })
-router.get('/atualizar', (req, res) => {
+router.get('/atualizar', eAdmin ,(req, res) => {//???
     res.send('atualiza taxa')
 })
 //Gerenciamneto de Produto
-router.get('/produto', (req, res) => {
+router.get('/produto', eAdmin ,(req, res) => {
     Produto.find().then((produtos) => {
         res.render('admin/produto', {produtos: produtos})
     }).catch((err) => {
@@ -32,10 +34,10 @@ router.get('/produto', (req, res) => {
         res.redirect('/admin/produto')
     })
 })
-router.get('/produto/add', (req, res) => {
+router.get('/produto/add', eAdmin,(req, res) => {
     res.render('admin/addproduto')
 })
-router.post('/produto/nova', (req, res) => {
+router.post('/produto/nova',eAdmin, (req, res) => {
     var erros= []
     if(!req.body.descricao || typeof req.body.descricao == undefined || req.body.descricao == null){
         erros.push({texto: 'Descrição obrigatória'})
@@ -65,7 +67,7 @@ router.post('/produto/nova', (req, res) => {
         })
 }
 })
-router.get('/produto/edit/:id', (req, res) => {
+router.get('/produto/edit/:id', eAdmin,(req, res) => {
     Produto.findOne({_id: req.params.id}).then((produto) => {
         res.render('admin/editproduto', {produto: produto})
     }).catch((err) => {
@@ -73,7 +75,7 @@ router.get('/produto/edit/:id', (req, res) => {
         res.redirect('/admin/produto')
     })
 })
-router.post('/produto/editproduto/:id', (req, res) => {
+router.post('/produto/editproduto/:id', eAdmin,(req, res) => {
     Produto.findOne({_id: req.params.id}).then((produto) => {
         var erros=[]
         if(!req.body.descricao || typeof req.body.descricao == undefined || req.body.descricao == null){
@@ -102,7 +104,7 @@ router.post('/produto/editproduto/:id', (req, res) => {
         }
     })
 })
-router.post('/produto/deletar/:id', (req, res) => {
+router.post('/produto/deletar/:id',eAdmin, (req, res) => {
     Produto.deleteOne({_id: req.params.id}).then(() => {
         req.flash('success_msg', 'Produto excluído com sucesso')
         res.redirect('/admin/produto')
@@ -112,7 +114,7 @@ router.post('/produto/deletar/:id', (req, res) => {
         res.redirect('/admin/produto')
     })
 })
-router.get('/usuarios/editcliente/:id', (req, res) => {
+router.get('/usuarios/editcliente/:id', eAdmin,(req, res) => {
     Cliente.findOne({_id: req.params.id}).then((cliente) => {
         res.render('admin/editcliente', {cliente: cliente})
     }).catch((err) => {
@@ -120,7 +122,7 @@ router.get('/usuarios/editcliente/:id', (req, res) => {
         res.redirect('/admin/clientes')
     })
 })
-router.post('/usuarios/editcliente/:id', (req, res) => {
+router.post('/usuarios/editcliente/:id', eAdmin,(req, res) => {
     Cliente.findOne({_id: req.params.id}).then((cliente) => {
         var erros=[]
         if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
@@ -151,7 +153,7 @@ router.post('/usuarios/editcliente/:id', (req, res) => {
         }
     })
 })
-router.post('/usuarios/deletecliente/:id', (req, res) => {
+router.post('/usuarios/deletecliente/:id',eAdmin, (req, res) => {
     Cliente.deleteOne({_id: req.params.id}).then(() => {
         req.flash('success_msg', 'Cliente excluído com sucesso')
         res.redirect('/admin/clientes')
@@ -162,7 +164,7 @@ router.post('/usuarios/deletecliente/:id', (req, res) => {
     })
 })
 //Gerenciamento de Usuário
-router.get('/clientes', (req, res) => {
+router.get('/clientes', eAdmin,(req, res) => {
     Cliente.find().lean().populate('carteira').sort({date: 'desc'}).then((clientes) => {
         res.render('admin/clientes', {clientes: clientes})
     }).catch((err) => {

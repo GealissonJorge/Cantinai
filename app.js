@@ -10,6 +10,8 @@ const admin = require('./routes/admin')
 const funcionario= require('./routes/funcionario')
 const cliente = require('./routes/cliente')
 const qrmanagement = require('./routes/qrcode')
+const passport = require('passport')
+require("./config/auth")(passport)
 
 //config
 //sessao
@@ -18,11 +20,17 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }))
+//passport
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use(flash())
 //middlewares padrao de msg de feedback
 app.use((req, res, next)=>{
     res.locals.success_msg = req.flash('success_msg')
     res.locals.error_msg = req.flash('error_msg')
+    res.locals.error = req.flash("error")
+    res.locals.user = req.user || null
     next()
 })
 //bodyParser
@@ -52,6 +60,26 @@ app.use('/qrcode', qrmanagement)
 app.get('/', (req, res) => {
     res.render('index')
 })
+app.get('/login',(req,res)=>{
+    res.render('login')
+})
+
+app.post('/login',(req,res,next)=>{
+    passport.authenticate('local',{
+        successRedirect:"/",
+        failureRedirect: "/login",
+        failureFlash: true
+    })(req,res,next)
+})
+
+app.get("/logout",(req,res,next)=>{
+    req.logout(function(err){
+        if(err){return next(err)}
+        req.flash("success_msg","deslogado")
+        res.redirect("/")
+    })
+})
+
 const port = process.env.PORT || 3000;
 app.listen(port, "0.0.0.0", () => {
     console.log('listening on port 3000')

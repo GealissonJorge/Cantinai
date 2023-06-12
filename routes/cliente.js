@@ -5,6 +5,8 @@ require('../models/Cliente')
 const Cliente = mongoose.model('Clientes')
 require('../models/Carteira')
 const Carteira = mongoose.model('Carteiras')
+const bcrypt = require("bcryptjs")
+
 router.get('/', (req, res) => {
     res.render('cliente/cliente')
 })
@@ -31,32 +33,50 @@ router.post('/cadastro/novo', (req, res) => {
     if(erros.length > 0){
         res.render('cliente/cadastro', {erros: erros})
     }else{
-    var idcarteira = new mongoose.Types.ObjectId();
+        Cliente.findOne({email: req.body.email}).lean().then((cliente)=>{
+            if(cliente){
+                req.flash("error_msg","email ja cadatrado no sistema")
+                res.redirect("/cliente/cadastro")
+            }else{
+                var idcarteira = new mongoose.Types.ObjectId();
 
-    new Carteira().save().then((carteira) => {
-        idcarteira = carteira._id
-        const novoCliente = {
-            nome: req.body.nome,
-            cpf: req.body.cpf,
-            email: req.body.email,
-            telefone: req.body.telefone,
-            senha: req.body.senha,
-            carteira: idcarteira
-        }
-
-        new Cliente(novoCliente).save().then(() => {
-            req.flash('success_msg', 'Cliente cadastrado com sucesso')
-            res.redirect('/cliente')
-        }).catch((err) => {
-            req.flash('error_msg', 'Erro ao cadastrar')
-            console.log('Erro ao cadastrar: ' + err)
-            res.redirect('/cliente/cadastro')
-        });
-        }).catch((err) => {
-            req.flash('error_msg', 'Erro ao cadastrar')
-            console.log('Erro ao cadastrar: ' + err)
-        })
-
+                new Carteira().save().then((carteira) => {
+                    idcarteira = carteira._id
+                    const novoCliente = new Cliente({
+                        nome: req.body.nome,
+                        cpf: req.body.cpf,
+                        email: req.body.email,
+                        telefone: req.body.telefone,
+                        senha: req.body.senha,
+                        carteira: idcarteira
+                    })
+                    
+                    bcrypt.genSalt(10,(erro,salt)=>{
+                        bcrypt.hash(novoCliente.senha,salt,(erro,hash)=>{
+                            if(erro){
+                                req.flash("error_msg","erro ao criptografar")
+                                res.redirect("/")
+                            }
+                            novoCliente.senha=hash
+                            novoCliente.save().then(()=>{
+                                req.flash("success_msg","usuario cadastrado")
+                                res.redirect("/cliente")
+                            }).catch((err)=>{
+                                req.flash("error_msg","erro ao cadastrar")
+                                res.redirect("/cliente/cadastro")
+                            })
+                        })
+                    })
+                    }).catch((err)=>{
+                        req.flash("error_msg","houve um erro")
+                        res.redirect("/")
+                    })
+            }
+            }).catch((err)=>{
+                req.flash("error_msg","houve um erro")
+                res.redirect("/")
+            })
     }
 })
+
 module.exports = router

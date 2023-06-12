@@ -29,6 +29,14 @@ const Cliente = new Schema({
     date: {
         type : Date,
         default : Date.now()
+    },
+    eAdmin:{
+        type: Number,
+        default: 0
+    },
+    eFuncionario:{
+        type: Number,
+        default: 0
     }
 })
 mongoose.model('Clientes', Cliente)

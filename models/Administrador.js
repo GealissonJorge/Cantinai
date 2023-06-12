@@ -28,6 +28,14 @@ const Administrador = new Schema({
     date: {
         type : Date,
         default : Date.now()
+    },
+    eAdmin:{
+        type: Number,
+        default: 1
+    },
+    eFuncionario:{
+        type: Number,
+        default: 1
     }
 })
 mongoose.model('Administradores', Administrador)
