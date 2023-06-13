@@ -6,12 +6,46 @@ require('../models/Taxa')
 const Taxa = mongoose.model('Taxas')
 require('../models/Venda')
 const Venda = mongoose.model('Vendas')
+require('../models/Cliente')
+const Cliente = mongoose.model('Clientes')
+require('../models/Carteira')
+const Carteira = mongoose.model('Carteiras')
 router.get('/', eFuncionario ,(req, res) => {
     res.render('funcionario/funcionario')
 })
 router.get('/recarga', eFuncionario ,(req, res) => {
     res.render('funcionario/recarga')
 })
+router.post('/recarga', eFuncionario ,(req, res) => {
+    Cliente.findOne({cpf: req.body.cpf}).lean().then((cliente)=>{
+        var erros= []
+        if(!req.body.cpf || typeof req.body.cpf == undefined || req.body.cpf == null){
+            erros.push({texto: 'CPF obrigatório'})
+        }
+
+        if(!req.body.valor || typeof req.body.valor == undefined || req.body.valor == null){
+            erros.push({texto: 'Valor obrigatório'})
+        }
+        if(erros.length > 0){
+            res.render('funcionario/recarga', {erros: erros})
+        }else{
+            Carteira.findOne({_id: cliente.carteira}).then((carteira)=>{
+                carteira.saldo = (req.body.valor)*1+carteira.saldo
+                carteira.save().then(()=>{
+                    req.flash("success_msg","Recarga realizada com sucesso")
+                    res.redirect("/funcionario/recarga")
+                }).catch(err=>{
+                    req.flash("error_msg","erro ao realizar recarga")
+                    res.redirect("/funcionario/recarga")
+                })
+            })
+        }
+    }).catch(err=>{
+        req.flash("error_msg","erro ao realizar recarga")
+        res.redirect("/funcionario/recarga")
+    })
+})
+
 router.get('/venda', eFuncionario, (req, res) => {
     Taxa.findOne({}).then((taxas) => {
         res.render('funcionario/venda',{taxas: taxas})

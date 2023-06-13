@@ -1,5 +1,14 @@
 <h3>Recarga</h3>
-<label for="cpf">CPF</label>
-    <input type="text"  name="cpf" id="cpf" placeholder="xxx.xxx.xxx-xx" >
-<label for="valor">Valor</label>
-    <input type="text"  name="valor" id="valor" placeholder="R$">
+<div class="card">
+   <div class="card-body">
+    <form action="/funcionario/recarga" method="POST">
+    <label for="cpf">CPF</label>
+        <input type="text"  name="cpf" id="cpf" placeholder="xxx.xxx.xxx-xx" >
+    <label for="valor">Valor</label>
+        <input type="text"  name="valor" id="valor" placeholder="R$">
+    
+    <button type="submit" class="btn btn-primary">Finalizar</button>
+    </form>
+    
+  </div>
+</div>
