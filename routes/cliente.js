@@ -84,7 +84,27 @@ router.get('/comprar/:id', (req, res) => {
         res.render('cliente/comprar', {venda: venda})
     })
 })
-
+router.post('/comprar/:id', (req, res) => {
+    Venda.findOne({_id: req.params.id}).then((venda)=>{
+        venda.cliente= req.user._id
+        Cliente.findOne({_id: req.user._id}).then((cliente)=>{
+            cliente.carteira= cliente.carteira-venda.valor
+            cliente.save().then(()=>{
+                venda.save().then(()=>{
+                    req.flash("success_msg","compra realizada")
+                    res.redirect("/cliente")
+                }).catch((err)=>{
+                    req.flash("error_msg","houve um erro")
+                    res.redirect("/cliente")
+                })
+            })
+        }).catch((err)=>{
+            console.log(err)
+        })
+    }).catch((err)=>{
+        console.log(err)
+    })
+})
 
 
 

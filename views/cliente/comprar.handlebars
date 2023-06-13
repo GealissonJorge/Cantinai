@@ -1,1 +1,23 @@
-{{venda.valor}}
+<h3>Finalizar compra</h3>
+<div class="card mt-4">
+    <div class="card-body">
+        <form action="{{novaVenda.id}}" method="POST">
+            <h5>Valor da compra: R${{venda.valor}}</h5>
+            <p>Funcionario: {{venda.funcionario.nome}}</p>
+            <p>Data: {{venda.horario}}</p>
+            {{#if venda.bebida}}
+                <p>Bebida: Sim</p>
+            {{/if}}
+            {{#if venda.suco}}
+                <p>Suco: Sim</p>
+            {{/if}}
+            {{#if venda.refrigerante}}
+                <p>Refrigerante: Sim</p>
+            {{/if}}
+            {{#if venda.agua}}
+                <p>Água: Sim</p>
+            {{/if}}
+            <button type="submit" class="btn btn-primary" value="Get QR">Finalizar</button>
+        </form>
+    </div>
+</div>
