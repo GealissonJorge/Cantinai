@@ -80,6 +80,7 @@ router.post('/venda/nova', eFuncionario ,(req, res) => {
     if(erros.length > 0){
         res.render('funcionario/venda', {erros: erros})
     }else{
+        console.log(req.user._id)
         const novaVenda= new Venda({
             valor: req.body.prato*req.body.taxa,
             bebida: req.body.bebida,
