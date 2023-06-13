@@ -219,22 +219,33 @@ router.post('/funcionario/novo', (req, res) => {
     if(erros.length > 0){
         res.render('admin/addfuncionario', {erros: erros})
     }else{
-        const novoFuncionario = {
+        const novoFuncionario = new Funcionario({
             nome: req.body.nome,
             cpf: req.body.cpf,
             email: req.body.email,
             telefone: req.body.telefone,
             senha: req.body.senha,
             endereco: req.body.endereco
-        }
-        new Funcionario(novoFuncionario).save().then(() => {
-            req.flash('success_msg', 'Funcionário cadastrado com sucesso')
-            res.redirect('/admin/funcionarios')
-            console.log('Cadastrado com sucesso')
-        }).catch((err) => {
-            req.flash('error_msg', 'Erro ao cadastrar')
-            console.log('Erro ao cadastrar: ' + err)
         })
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(novoFuncionario.senha, salt, (erro, hash) => {
+                if(erro){
+                    req.flash("error_msg","erro ao criptografar")
+                    res.redirect("/")
+                }
+            
+            novoFuncionario.senha = hash
+            novoFuncionario.save().then(() => {
+                req.flash('success_msg', 'Administrador cadastrado com sucesso')
+                res.redirect('/admin/funcionarios')
+            }).catch((err) => {
+                req.flash('error_msg', 'Erro ao cadastrar')
+                console.log('Erro ao cadastrar: ' + err)
+                res.redirect('/admin/funcionarios')
+            })
+        })
+        })
+
     }
 })
 router.get('/usuarios/editfuncionario/:id', (req, res) => {
