@@ -108,7 +108,6 @@ router.post('/comprar/:id', (req, res) => {
                         req.flash("success_msg","compra realizada")
                         res.redirect("/cliente")
                     })
-                    
                 }).catch((err)=>{
                     req.flash("error_msg","houve um erro")
                     res.redirect("/cliente")

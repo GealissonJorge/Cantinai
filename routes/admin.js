@@ -158,7 +158,8 @@ router.post('/usuarios/editcliente/:id', eAdmin,(req, res) => {
     })
 })
 router.post('/usuarios/deletecliente/:id',eAdmin, (req, res) => {
-    Cliente.deleteOne({_id: req.params.id}).then((cliente) => {
+    
+    Cliente.findOneAndDelete({_id: req.params.id}).then((cliente) => {
         Carteira.deleteOne({_id: cliente.carteira}).then(() => {
             req.flash('success_msg', 'Cliente excluído com sucesso')
             res.redirect('/admin/clientes')
@@ -311,7 +312,6 @@ router.post('/usuarios/editfuncionario/:id', (req, res) => {
 })
 router.post('/usuarios/deletefuncionario/:id', (req, res) => {
     Funcionario.deleteOne({_id: req.params.id}).then(() => {
-
         req.flash('success_msg', 'Funcionário deletado com sucesso')
         res.redirect('/admin/funcionarios')
     }).catch((err) => {
