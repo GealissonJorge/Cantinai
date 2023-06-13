@@ -1,26 +1,43 @@
-<label for="prato">Peso do prato taxa atual</label>
-    <input type="text" name="prato" id="prato">
-<div class="form-check">
-  <input class="form-check-input" type="radio" name="bebida" id="bebida">
-  <label class="form-check-label" for="bebida">
-    Bebida
-  </label>
-</div>
-<div>
-  <input class="form-check-input" type="radio" name="suco" id="suco">
-  <label class="form-check-label" for="suco">
-    Suco
-  </label>
-</div>
-<div>
-<input class="form-check-input" type="radio" name="refrigerante" id="refrigerante">
-  <label class="form-check-label" for="refrigerante">
-    Refrigerante
-  </label>
-</div>
-<div>
-<input class="form-check-input" type="radio" name="agua" id="agua">
-  <label class="form-check-label" for="agua">
-    Água
-  </label>
-</div>
+{{#each erros}}
+    <div class="alert alert-danger">{{texto}}</div>
+{{else}}
+{{/each}}
+
+<div class="card mt-4">
+  <h6 class="card-header">Taxa de R$ {{taxas.taxa}} o quilo</h6>
+    <div class="card-body">
+        <form action="/funcionario/venda/nova" method="POST">
+        <input type="hidden" name="taxa" value="{{taxas.taxa}}" id="taxa"> 
+        <label for="prato">Peso do prato: </label>
+          <input type="text" name="prato" id="prato">
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="bebida" id="bebida">
+        <label class="form-check-label" for="bebida">
+          Bebida
+        </label>
+    </div>
+    <div>
+      <input class="form-check-input" type="radio" name="suco" id="suco">
+        <label class="form-check-label" for="suco">
+          Suco
+        </label>
+    </div>
+    <div>
+    <input class="form-check-input" type="radio" name="refrigerante" id="refrigerante">
+      <label class="form-check-label" for="refrigerante">
+        Refrigerante
+      </label>
+    </div>
+    <div>
+      <input class="form-check-input" type="radio" name="agua" id="agua">
+        <label class="form-check-label" for="agua">
+          Água
+        </label>
+    
+    </div>
+  <button class="btn btn-success mt-4">Finalizar</button>
+  </form> 
+    </div>
+      
+  </div>
+

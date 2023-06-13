@@ -6,7 +6,8 @@ const Cliente = mongoose.model('Clientes')
 require('../models/Carteira')
 const Carteira = mongoose.model('Carteiras')
 const bcrypt = require("bcryptjs")
-
+require('../models/Venda')
+const Venda = mongoose.model('Vendas')
 router.get('/', (req, res) => {
     res.render('cliente/cliente')
 })
@@ -78,5 +79,13 @@ router.post('/cadastro/novo', (req, res) => {
             })
     }
 })
+router.get('/comprar/:id', (req, res) => {
+    Venda.findOne({_id: req.params.id}).populate().lean().then((venda)=>{
+        res.render('cliente/comprar', {venda: venda})
+    })
+})
+
+
+
 
 module.exports = router

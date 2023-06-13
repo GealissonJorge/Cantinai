@@ -4,8 +4,8 @@ const qr = require('qrcode')
 router.get('/', (req, res) => {
     res.render('qrcode/qrcode')
 })
-router.post("/scan", (req, res) => {
-    const url = req.body.url;
+router.post("/scan/:id", (req, res) => {
+    const url = "/cliente/comprar/"+req.params.id;
 
     // If the input is null return "Empty Data" error
     if (url.length === 0) res.send("Empty Data!");

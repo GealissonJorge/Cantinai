@@ -5,6 +5,31 @@ const Venda = new Schema({
         type: Number,
         required: true
     },
+    cliente:{
+        type: Schema.Types.ObjectId,
+        ref: 'Cliente'
+    },
+    funcionario:{
+        type: Schema.Types.ObjectId,
+        ref: 'Funcionario',
+        required: true
+    },
+    bebida:{
+        type: Number,
+        default: 0
+    },
+    suco:{
+        type: Number,
+        default: 0
+    },
+    refrigerante:{
+        type: Number,
+        default: 0
+    },
+    agua:{
+        type: Number,
+        default: 0
+    },
     horario:{
         type: Date,
         default: Date.now()
