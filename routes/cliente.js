@@ -88,11 +88,15 @@ router.post('/comprar/:id', (req, res) => {
     Venda.findOne({_id: req.params.id}).then((venda)=>{
         venda.cliente= req.user._id
         Cliente.findOne({_id: req.user._id}).then((cliente)=>{
-            cliente.carteira= cliente.carteira-venda.valor
-            cliente.save().then(()=>{
+            Carteira.findOne({_id: cliente.carteira}).then((carteira)=>{
+                carteira.saldo = carteira.saldo - venda.valor
                 venda.save().then(()=>{
-                    req.flash("success_msg","compra realizada")
-                    res.redirect("/cliente")
+                    
+                    carteira.save().then(()=>{
+                        req.flash("success_msg","compra realizada")
+                        res.redirect("/cliente")
+                    })
+                    
                 }).catch((err)=>{
                     req.flash("error_msg","houve um erro")
                     res.redirect("/cliente")
