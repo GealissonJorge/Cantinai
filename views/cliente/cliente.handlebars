@@ -1,5 +1,9 @@
+
 <h3>Bem vindo, {{user.nome}}</h3>
-<p>Saldo na carteira: VALOR</p>
+{{#if cliente}}
+    <p>Saldo na carteira:R$ {{cliente.carteira.saldo}}</p>
+{{/if}}
+
 <button class="btn btn-primary">Ler Qrcode</button>
 <button class="btn btn-primary">Ver Histórico</button>
 <a href="/qrcode/leitor"><button>Ler Qrcode</button></a>

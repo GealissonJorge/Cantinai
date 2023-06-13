@@ -9,7 +9,10 @@ const bcrypt = require("bcryptjs")
 require('../models/Venda')
 const Venda = mongoose.model('Vendas')
 router.get('/', (req, res) => {
-    res.render('cliente/cliente')
+    Cliente.findOne({_id: req.user._id}).populate('carteira').lean().then((cliente)=>{
+        res.render('cliente/cliente', {cliente: cliente})
+    })
+    
 })
 router.get('/cadastro', (req, res) => {
     res.render('cliente/cadastro')
