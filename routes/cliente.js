@@ -9,9 +9,18 @@ const bcrypt = require("bcryptjs")
 require('../models/Venda')
 const Venda = mongoose.model('Vendas')
 router.get('/', (req, res) => {
-    Cliente.findOne({_id: req.user._id}).populate('carteira').lean().then((cliente)=>{
-        res.render('cliente/cliente', {cliente: cliente})
-    })
+    if(!req.user){
+        req.flash('error_msg', 'É necessario estar logado para acessar esta página')
+        res.redirect('/')
+    }else{
+        Cliente.findOne({_id: req.user._id}).populate('carteira').lean().then((cliente)=>{
+            res.render('cliente/cliente', {cliente: cliente})
+        }).catch((err) => {
+            req.flash('error_msg', 'É necessario estar logado para acessar esta página')
+            res.redirect('/')
+        })
+    }
+    
     
 })
 router.get('/cadastro', (req, res) => {
@@ -37,9 +46,9 @@ router.post('/cadastro/novo', (req, res) => {
     if(erros.length > 0){
         res.render('cliente/cadastro', {erros: erros})
     }else{
-        Cliente.findOne({email: req.body.email}).lean().then((cliente)=>{
+        Cliente.findOne({email: req.body.email, cpf: req.body.cpf}).lean().then((cliente)=>{
             if(cliente){
-                req.flash("error_msg","email ja cadatrado no sistema")
+                req.flash("error_msg","email ou cpf ja cadatrado no sistema")
                 res.redirect("/cliente/cadastro")
             }else{
                 var idcarteira = new mongoose.Types.ObjectId();
@@ -53,8 +62,7 @@ router.post('/cadastro/novo', (req, res) => {
                         telefone: req.body.telefone,
                         senha: req.body.senha,
                         carteira: idcarteira
-                    })
-                    
+                    }) 
                     bcrypt.genSalt(10,(erro,salt)=>{
                         bcrypt.hash(novoCliente.senha,salt,(erro,hash)=>{
                             if(erro){
@@ -64,7 +72,8 @@ router.post('/cadastro/novo', (req, res) => {
                             novoCliente.senha=hash
                             novoCliente.save().then(()=>{
                                 req.flash("success_msg","usuario cadastrado")
-                                res.redirect("/cliente")
+                                res.redirect("/login")
+
                             }).catch((err)=>{
                                 req.flash("error_msg","erro ao cadastrar")
                                 res.redirect("/cliente/cadastro")

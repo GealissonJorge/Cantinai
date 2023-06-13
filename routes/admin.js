@@ -14,6 +14,10 @@ require('../models/Venda')
 const Venda = mongoose.model('Vendas')
 require('../models/Taxa')
 const Taxa = mongoose.model('Taxas')
+require('../models/Carteira')
+const Carteira = mongoose.model('Carteiras')
+
+
 const {eAdmin} = require('../helpers/eAdmin')//bastar colocar , eAdmin, nas paginas que so admin podem visualizar
 const bcrypt = require("bcryptjs")
 router.get('/', eAdmin ,(req, res) => {
@@ -154,9 +158,18 @@ router.post('/usuarios/editcliente/:id', eAdmin,(req, res) => {
     })
 })
 router.post('/usuarios/deletecliente/:id',eAdmin, (req, res) => {
-    Cliente.deleteOne({_id: req.params.id}).then(() => {
-        req.flash('success_msg', 'Cliente excluído com sucesso')
-        res.redirect('/admin/clientes')
+    Cliente.deleteOne({_id: req.params.id}).then((cliente) => {
+        Carteira.deleteOne({_id: cliente.carteira}).then(() => {
+            req.flash('success_msg', 'Cliente excluído com sucesso')
+            res.redirect('/admin/clientes')
+        }).catch((err) => {
+            req.flash('error_msg', 'Erro ao excluir carteira')
+            console.log('Erro ao excluir: ' + err)
+            res.redirect('/admin/clientes')
+        })
+        
+        //req.flash('success_msg', 'Cliente excluído com sucesso')
+        //res.redirect('/admin/clientes')
     }).catch((err) => {
         req.flash('error_msg', 'Erro ao excluir')
         console.log('Erro ao excluir: ' + err)
@@ -298,6 +311,7 @@ router.post('/usuarios/editfuncionario/:id', (req, res) => {
 })
 router.post('/usuarios/deletefuncionario/:id', (req, res) => {
     Funcionario.deleteOne({_id: req.params.id}).then(() => {
+
         req.flash('success_msg', 'Funcionário deletado com sucesso')
         res.redirect('/admin/funcionarios')
     }).catch((err) => {

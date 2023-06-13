@@ -16,7 +16,6 @@ module.exports = function(passport){
 
         Cliente.findOne({email: email}).lean().then((cliente)=>{
             if(cliente){
-                //return done(null,false,{message:"conta nao existe cliente"})
                 bcrypt.compare(senha,cliente.senha,(erro,batem)=>{
                     if(batem){
                         return done(null,cliente)
