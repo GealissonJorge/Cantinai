@@ -10,6 +10,8 @@ require('../models/Cliente')
 const Cliente = mongoose.model('Clientes')
 require('../models/Carteira')
 const Carteira = mongoose.model('Carteiras')
+require('../models/Funcionario')
+const Funcionario = mongoose.model('Funcionarios')
 router.get('/', eFuncionario ,(req, res) => {
     res.render('funcionario/funcionario')
 })
@@ -80,7 +82,6 @@ router.post('/venda/nova', eFuncionario ,(req, res) => {
     if(erros.length > 0){
         res.render('funcionario/venda', {erros: erros})
     }else{
-        console.log(req.user._id)
         const novaVenda= new Venda({
             valor: req.body.prato*req.body.taxa,
             bebida: req.body.bebida,
@@ -93,7 +94,10 @@ router.post('/venda/nova', eFuncionario ,(req, res) => {
         novaVenda.save().then(() => {
             req.flash('success_msg', 'Venda realizada com sucesso')
             //res.redirect('/funcionario/venda')
-            res.render('./qrcode/qrcode', {novaVenda: novaVenda})
+            Funcionario.findOne({_id: req.user._id}).lean().then((funcionario)=>{
+                res.render('./qrcode/qrcode', {novaVenda: novaVenda, funcionario: funcionario})
+            })
+           
         }).catch((err) => {
             console.log(err)
             req.flash('error_msg', 'Erro ao realizar venda')

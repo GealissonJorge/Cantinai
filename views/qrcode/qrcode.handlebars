@@ -1,9 +1,9 @@
-<h3>finalizar Venda</h3>
+<h3>Finalizar Venda</h3>
 <div class="card mt-4">
     <div class="card-body">
         <form class="form" action="/qrcode/scan/{{novaVenda.id}}" method="POST">
             <h5>Valor: R${{novaVenda.valor}}</h5>
-            <p>Funcionario: {{novaVenda.funcionario.nome}}</p>
+            <p>Funcionario: {{funcionario.nome}}</p>
             <p>Data: {{novaVenda.horario}}</p>
             {{#if novaVenda.bebida}}
                 <p>Bebida: Sim</p>

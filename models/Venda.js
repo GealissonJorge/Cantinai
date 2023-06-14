@@ -7,11 +7,11 @@ const Venda = new Schema({
     },
     cliente:{
         type: Schema.Types.ObjectId,
-        ref: 'Cliente'
+        ref: 'Clientes'
     },
     funcionario:{
         type: Schema.Types.ObjectId,
-        ref: 'Funcionario',
+        ref: 'Funcionarios',
         required: true
     },
     bebida:{
