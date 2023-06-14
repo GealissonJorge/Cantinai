@@ -92,7 +92,7 @@ router.post('/cadastro/novo', (req, res) => {
     }
 })
 router.get('/comprar/:id', (req, res) => {
-    Venda.findOne({_id: req.params.id}).lean().then((venda)=>{
+    Venda.findOne({_id: req.params.id}).populate('funcionario').lean().then((venda)=>{
         res.render('cliente/comprar', {venda: venda})
     })
 })
