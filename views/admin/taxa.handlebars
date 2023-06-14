@@ -10,9 +10,14 @@
 <h5>Nenhuma taxa cadastrada</h5>
 {{/each}}
 <form action="/admin/taxa/nova" method="POST">
-<label for="taxa">Nova taxa:</label>
-    <input type="number" name="taxa" id="taxa">
-    <button class="btn btn-success">Atualizar</button>
+    <div class="card">
+        <div class="card-body">
+            <label for="taxa">Nova taxa:</label>
+                <input type="number" name="taxa" id="taxa" class="form-control w-25">
+            <button class="btn btn-success mt-4">Atualizar</button>
+        </div>
+    </div>
+    
 </form>
 
 

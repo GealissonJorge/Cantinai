@@ -23,12 +23,6 @@ const bcrypt = require("bcryptjs")
 router.get('/', eAdmin ,(req, res) => {
     res.render('admin/administrador')
 })
-router.get('/venda', eAdmin ,(req, res) => {
-    res.send('realizando venda')
-})
-router.get('/atualizar', eAdmin ,(req, res) => {//???
-    res.send('atualiza taxa')
-})
 //Gerenciamneto de Produto
 router.get('/produto', eAdmin ,(req, res) => {
     Produto.find().then((produtos) => {
@@ -190,7 +184,7 @@ router.get('/clientes', eAdmin,(req, res) => {
 
 
 router.get('/funcionarios', (req, res) => {
-    Funcionario.find().then((funcionarios) => {
+    Funcionario.find().sort({date: 'desc'}).then((funcionarios) => {
         res.render('admin/funcionarios', {funcionarios: funcionarios})
     }).catch((err) => {
         req.flash('error_msg', 'Erro ao listar funcionários')
@@ -198,7 +192,7 @@ router.get('/funcionarios', (req, res) => {
     })
 })
 router.get('/administradores', (req, res) => {
-    Administrador.find().then((administradores) => {
+    Administrador.find().sort({date: 'desc'}).then((administradores) => {
         res.render('admin/administradores', {administradores: administradores})
     }).catch((err) => {
         req.flash('error_msg', 'Erro ao listar administradores')
