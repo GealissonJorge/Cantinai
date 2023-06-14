@@ -1,0 +1,26 @@
+<h2>Histórico de vendas de {{user.nome}}</h2>
+<hr>
+{{#each vendas}}
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5>Valor da venda:R$ {{valor}}</h5>
+            <p>Cliente: {{admin.nome}}</p>
+            <p>Data: {{horario}}</p>
+            {{#if bebida}}
+                <p>Bebida: Sim</p>
+            {{/if}}
+            {{#if suco}}
+                <p>Suco: Sim</p> 
+            {{/if}}
+            {{#if refrigerante}}      
+                <p>Refrigerante: Sim</p>
+            {{/if}}
+            {{#if agua}}
+                <p>Água: Sim</p>
+            {{/if}}            
+
+        </div>
+
+    </div>
+
+{{/each}}

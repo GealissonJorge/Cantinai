@@ -12,6 +12,9 @@ require('../models/Carteira')
 const Carteira = mongoose.model('Carteiras')
 require('../models/Funcionario')
 const Funcionario = mongoose.model('Funcionarios')
+require('../models/Administrador')
+const Administrador = mongoose.model('Administradores')
+
 router.get('/', eFuncionario ,(req, res) => {
     res.render('funcionario/funcionario')
 })
@@ -98,7 +101,15 @@ router.post('/venda/nova', eFuncionario ,(req, res) => {
             req.flash('success_msg', 'Venda realizada com sucesso')
             //res.redirect('/funcionario/venda')
             Funcionario.findOne({_id: req.user._id}).lean().then((funcionario)=>{
-                res.render('./qrcode/qrcode', {novaVenda: novaVenda, funcionario: funcionario})
+                if(!funcionario){
+                    Administrador.findOne({_id: req.user._id}).lean().then((admin)=>{
+                        res.render('./qrcode/qrcode', {novaVenda: novaVenda, funcionario: admin})    
+                    })
+
+                }else{
+                    res.render('./qrcode/qrcode', {novaVenda: novaVenda, funcionario: funcionario})
+                }
+                
             })
            
         }).catch((err) => {
@@ -109,7 +120,7 @@ router.post('/venda/nova', eFuncionario ,(req, res) => {
     }  
 })
 router.get('/historico', (req, res) => {
-    Venda.find({funcionario: req.user._id}).populate('cliente').then((vendas)=>{
+    Venda.find({funcionario: req.user._id}).populate('cliente').sort({historico: 'desc'}).then((vendas)=>{
         res.render('funcionario/historico', {vendas: vendas})
     })
 })

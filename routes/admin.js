@@ -505,6 +505,16 @@ router.post('/taxa/nova', (req, res) => {
     }
 })
 
+router.get('/historico', (req, res) => {
+    Venda.find({funcionario: req.user._id}).populate('cliente').then((vendas)=>{
+        Administrador.findOne({_id: vendas.funcionario}).then((admin)=>{
+            res.render('funcionario/historico', {vendas: vendas, admin: admin})    
+        })
+        
+    })
+})
+
+
 
 //adicionar rota para editar um usuario
 
