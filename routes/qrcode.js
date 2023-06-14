@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const qr = require('qrcode')
+
 router.get('/', (req, res) => {
     res.render('qrcode/qrcode')
 })
@@ -22,6 +23,7 @@ router.post("/scan/:id", (req, res) => {
     });
 });
 router.get("/leitor", (req, res) => {
+    
     res.render("qrcode/leitor");
 })
 
