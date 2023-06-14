@@ -28,6 +28,9 @@ router.post('/recarga', eFuncionario ,(req, res) => {
         if(!req.body.valor || typeof req.body.valor == undefined || req.body.valor == null){
             erros.push({texto: 'Valor obrigatório'})
         }
+        if(!cliente){
+            erros.push({texto: 'Cliente não encontrado'})
+        }
         if(erros.length > 0){
             res.render('funcionario/recarga', {erros: erros})
         }else{
