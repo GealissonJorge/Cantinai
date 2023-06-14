@@ -298,14 +298,27 @@ router.post('/usuarios/editfuncionario/:id', (req, res) => {
             funcionario.telefone = req.body.telefone
             funcionario.senha = req.body.senha
             funcionario.endereco = req.body.endereco
-            funcionario.save().then(() => {
-                req.flash('success_msg', 'Funcionário atualizado com sucesso')
-                res.redirect('/admin/funcionarios')
-            }).catch((err) => {
-                req.flash('error_msg', 'Erro ao atualizar')
-                console.log('Erro ao atualizar: ' + err)
-                res.redirect('/admin/funcionarios')
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(funcionario.senha, salt, (erro, hash) => {
+                    if(erro){
+                        req.flash("error_msg","erro ao criptografar")
+                        res.redirect("/")
+                    }
+                
+                funcionario.senha = hash
+                funcionario.save().then(() => {
+                    req.flash('success_msg', 'Funcionário atualizado com sucesso')
+                    res.redirect('/admin/funcionarios')
+                }).catch((err) => {
+                    req.flash('error_msg', 'Erro ao atualizar')
+                    console.log('Erro ao atualizar: ' + err)
+                    res.redirect('/admin/funcionarios')
+                })
             })
+
+        })
+
+           
         }
 
     })
@@ -417,14 +430,25 @@ router.post('/usuarios/editadministrador/:id', (req, res) => {
             administrador.telefone = req.body.telefone
             administrador.senha = req.body.senha
             administrador.endereco = req.body.endereco
-            administrador.save().then(() => {
-                req.flash('success_msg', 'Administrador atualizado com sucesso')
-                res.redirect('/admin/administradores')
-            }).catch((err) => {
-                req.flash('error_msg', 'Erro ao atualizar')
-                console.log('Erro ao atualizar: ' + err)
-                res.redirect('/admin/administradores')
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(administrador.senha, salt, (erro, hash) => {
+                    if(erro){
+                        req.flash("error_msg","erro ao criptografar")
+                        res.redirect("/")
+                    }
+                
+                administrador.senha = hash
+                administrador.save().then(() => {
+                    req.flash('success_msg', 'Administrador atualizado com sucesso')
+                    res.redirect('/admin/administradores')
+                }).catch((err) => {
+                    req.flash('error_msg', 'Erro ao atualizar')
+                    console.log('Erro ao atualizar: ' + err)
+                    res.redirect('/admin/administradores')
+                })
             })
+
+        })
         }
     })
 })
