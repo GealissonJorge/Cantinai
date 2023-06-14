@@ -3,6 +3,7 @@
 {{#if cliente}}
     <p>Saldo na carteira:R$ {{cliente.carteira.saldo}}</p>
 {{/if}}
-<button class="btn btn-primary">Ver Histórico</button>
+
+<a href="/cliente/historico"><button class="btn btn-primary">Ver Histórico</button></a>
 <a href="/qrcode/leitor"><button class="btn btn-success">Ler Qrcode</button></a>
 <a href="/cliente/cadastro"><button class="btn btn-success">Cadastrar Cliente</button></a>

@@ -108,4 +108,10 @@ router.post('/venda/nova', eFuncionario ,(req, res) => {
         })
     }  
 })
+router.get('/historico', (req, res) => {
+    Venda.find({funcionario: req.user._id}).populate('cliente').then((vendas)=>{
+        res.render('funcionario/historico', {vendas: vendas})
+    })
+})
+
 module.exports = router

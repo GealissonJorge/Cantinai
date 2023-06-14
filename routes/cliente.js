@@ -120,7 +120,11 @@ router.post('/comprar/:id', (req, res) => {
         console.log(err)
     })
 })
-
+router.get('/historico', (req, res) => {
+    Venda.find({cliente: req.user._id}).populate('funcionario').then((vendas)=>{
+        res.render('cliente/historico', {vendas: vendas})
+    })
+})
 
 
 module.exports = router
