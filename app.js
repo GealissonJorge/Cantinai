@@ -58,19 +58,29 @@ app.use('/funcionario', funcionario)
 app.use('/cliente', cliente)
 app.use('/qrcode', qrmanagement)
 app.get('/', (req, res) => {
+    res.render('login')
+})
+app.get('/index', (req, res) => {
     res.render('index')
 })
 app.get('/login',(req,res)=>{
     res.render('login')
 })
 
-app.post('/login',(req,res,next)=>{
+app.post('/login',
     passport.authenticate('local',{
-        successRedirect:"/",
         failureRedirect: "/login",
         failureFlash: true
-    })(req,res,next)
-})
+    }),(req,res,next)=>{
+        if(req.user.eAdmin == 1){
+            res.redirect('/admin')
+        }else if(req.user.eFuncionario == 1){
+            res.redirect('/funcionario')
+            
+        }else{
+            res.redirect('/cliente')
+        }
+    })
 
 app.get("/logout",(req,res,next)=>{
     req.logout(function(err){
