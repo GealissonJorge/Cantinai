@@ -3,38 +3,50 @@
 {{else}}
 {{/each}}
 
-<div class="card mt-4">
+<div class="card mt-4 mx-auto " style="width: 30rem">
   <h6 class="card-header">Taxa de R$ {{taxas.taxa}} o quilo</h6>
     <div class="card-body">
         <form action="/funcionario/venda/nova" method="POST">
-        <input type="hidden" name="taxa" value="{{taxas.taxa}}" id="taxa"> 
+        <input type="hidden" name="taxa" value="{{taxas.taxa}}" id="taxa">
+        <input type="hidden" name="bebidaValor" id="bebidaValor" value="{{taxas.bebida}}">
+        <input type="hidden" name="refriValor" id="refriValor" value="{{taxas.refrigerante}}"> 
+        <input type="hidden" name="sucoValor" id="sucoValor" value="{{taxas.suco}}">
+        <input type="hidden" name="aguaValor" id="aguaValor" value="{{taxas.agua}}">
         <label for="prato">Peso do prato (Kg): </label>
-          <input type="text" name="prato" id="prato">
+          <input type="text" name="prato" id="prato" class="form-control w-50">
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" name="bebida" id="bebida">
+      <input class="form-check-input from-control" type="checkbox" name="bebida" id="bebida">
         <label class="form-check-label" for="bebida">
           Bebida
         </label>
     </div>
     <div>
-      <input class="form-check-input" type="checkbox" name="suco" id="suco">
+      <input class="form-check-input from-control" type="checkbox" name="suco" id="suco">
         <label class="form-check-label" for="suco">
           Suco
         </label>
     </div>
     <div>
-    <input class="form-check-input" type="checkbox" name="refrigerante" id="refrigerante">
+    <input class="form-check-input from-control" type="checkbox" name="refrigerante" id="refrigerante">
       <label class="form-check-label" for="refrigerante">
         Refrigerante
       </label>
     </div>
     <div>
-      <input class="form-check-input" type="checkbox" name="agua" id="agua">
+      <input class="form-check-input from-control" type="checkbox" name="agua" id="agua">
         <label class="form-check-label" for="agua">
           Água
         </label>
-    
     </div>
+   <label for="produto">Produtos extras:</label>
+        <select name="produto" class="custom-select mt-2 form-control w-50" >
+            {{#each produtos}}
+            <option value="0">Nenhum</option>
+            <option value="{{_id}}">{{descricao}}</option>
+            {{else}}
+            <option value="0">nenhum produto registrada</option>
+            {{/each}}
+        </select>
   <button class="btn btn-success mt-4">Finalizar</button>
   </form> 
     </div>

@@ -477,7 +477,12 @@ router.post('/taxa/nova', (req, res) => {
         Taxa.count().then((count) => {
             if(count==0){
                 var novaTaxa = {
-                    taxa: req.body.taxa
+                    taxa: req.body.taxa,
+                    bebida: req.body.bebida,
+                    refrigerante: req.body.refri,
+                    suco: req.body.suco,
+                    agua: req.body.agua
+
                 }
                 new Taxa(novaTaxa).save().then(() => {
                     req.flash('success_msg', 'Taxa cadastrada com sucesso')
@@ -488,8 +493,11 @@ router.post('/taxa/nova', (req, res) => {
                 })
             }else{
                 Taxa.findOne({}).then((taxa) => {
-                    console.log(taxa.taxa)
-                    taxa.taxa= req.body.taxa
+                    taxa.taxa= req.body.taxa,
+                    taxa.bebida= req.body.bebida,
+                    taxa.refrigerante= req.body.refri,
+                    taxa.suco= req.body.suco,
+                    taxa.agua= req.body.agua
                     taxa.save().then(() => {
                         req.flash('success_msg', 'Taxa atualizada com sucesso')
                         res.redirect('/admin/taxa')

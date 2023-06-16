@@ -14,7 +14,8 @@ require('../models/Funcionario')
 const Funcionario = mongoose.model('Funcionarios')
 require('../models/Administrador')
 const Administrador = mongoose.model('Administradores')
-
+require('../models/Produto')
+const Produto = mongoose.model('Produtos')
 router.get('/', eFuncionario ,(req, res) => {
     res.render('funcionario/funcionario')
 })
@@ -55,7 +56,9 @@ router.post('/recarga', eFuncionario ,(req, res) => {
 
 router.get('/venda', eFuncionario, (req, res) => {
     Taxa.findOne({}).then((taxas) => {
-        res.render('funcionario/venda',{taxas: taxas})
+        Produto.find({}).lean().then((produtos)=>{
+            res.render('funcionario/venda',{taxas: taxas, produtos: produtos})
+        })
     })
     
 })
@@ -84,40 +87,55 @@ router.post('/venda/nova', eFuncionario ,(req, res) => {
     if(!req.body.prato || typeof req.body.prato == undefined || req.body.prato == null){
         erros.push({texto: 'Prato obrigatório'})
     }
+    if(req.body.produto==0){
+        req.body.produto=null
+    }
     if(erros.length > 0){
         Taxa.findOne({}).then((taxas) => {
             res.render('funcionario/venda',{erros: erros, taxas: taxas})
         })
     }else{
-        const novaVenda= new Venda({
-            valor: req.body.prato*req.body.taxa,
-            bebida: req.body.bebida,
-            suco: req.body.suco,
-            refrigerante: req.body.refrigerante,
-            agua: req.body.agua,
-            funcionario: req.user._id
 
-        })
-        novaVenda.save().then(() => {
-            req.flash('success_msg', 'Venda realizada com sucesso')
-            //res.redirect('/funcionario/venda')
-            Funcionario.findOne({_id: req.user._id}).lean().then((funcionario)=>{
-                if(!funcionario){
-                    Administrador.findOne({_id: req.user._id}).lean().then((admin)=>{
-                        res.render('./qrcode/qrcode', {novaVenda: novaVenda, funcionario: admin})    
-                    })
-
-                }else{
-                    res.render('./qrcode/qrcode', {novaVenda: novaVenda, funcionario: funcionario})
-                }
+        Produto.findOne({_id: req.body.produto}).lean().then((produto)=>{
+            var auxValor = (req.body.bebida*req.body.bebidaValor)+(req.body.suco*req.body.sucoValor)+(req.body.refrigerante*req.body.refriValor)+(req.body.agua*req.body.aguaValor)
+            if(!produto){
+                auxValor=auxValor+0
+            }else{
                 
+                auxValor+=produto.preco
+            }
+            const novaVenda= new Venda({
+            
+                valor: (req.body.prato*req.body.taxa)+auxValor,
+                bebida: req.body.bebida,
+                suco: req.body.suco,
+                refrigerante: req.body.refrigerante,
+                agua: req.body.agua,
+                funcionario: req.user._id
             })
-           
-        }).catch((err) => {
-            console.log(err)
-            req.flash('error_msg', 'Erro ao realizar venda')
-            res.redirect('/funcionario/venda')
+            novaVenda.save().then(() => {
+                req.flash('success_msg', 'Venda realizada com sucesso')
+                //res.redirect('/funcionario/venda')
+                Funcionario.findOne({_id: req.user._id}).lean().then((funcionario)=>{
+                    if(!funcionario){
+                        Administrador.findOne({_id: req.user._id}).lean().then((admin)=>{
+                            res.render('./qrcode/qrcode', {novaVenda: novaVenda, funcionario: admin})    
+                        })
+    
+                    }else{
+                        res.render('./qrcode/qrcode', {novaVenda: novaVenda, funcionario: funcionario})
+                    }
+                    
+                })
+               
+            }).catch((err) => {
+                console.log(err)
+                req.flash('error_msg', 'Erro ao realizar venda')
+                res.redirect('/funcionario/venda')
+            })
+
         })
+        
     }  
 })
 router.get('/historico', (req, res) => {

@@ -5,6 +5,10 @@
 <h2>Gerenciar Taxa</h2>
 {{#each taxas}}
 <h5>A taxa atual é R$ {{taxa}} o quilo</h5>
+<h5>A Bebida atual é R$ {{bebida}}</h5>
+<h5>O refrigerante atual é R$ {{refrigerante}}</h5>
+<h5>O suco atual é R$ {{suco}}</h5>
+<h5>O Água atual é R$ {{agua}}</h5>
 <input type="hidden" name="valor" id="valor" value="{{taxa}}">
 {{else}}
 <h5>Nenhuma taxa cadastrada</h5>
@@ -14,6 +18,14 @@
         <div class="card-body">
             <label for="taxa">Nova taxa:</label>
                 <input type="number" name="taxa" id="taxa" class="form-control w-25">
+            <label for="bebida">Novo valor para a bebida:</label>
+                <input type="number" name="bebida" id="beida" class="form-control w-25">
+            <label for="refrigerante">Novo valor para refrigerante</label>
+                <input type="number" name="refri" id="refri" class="form-control w-25" >
+            <label for="suco">Novo valor para suco</label>
+                <input type="number" name="suco" id="suco" class="form-control w-25">
+            <label for="agua">Novo valor para água</label>
+                <input type="number" name="agua" id="agua" class="form-control w-25">
             <button class="btn btn-success mt-4">Atualizar</button>
         </div>
     </div>
