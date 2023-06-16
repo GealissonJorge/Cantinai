@@ -27,7 +27,6 @@ router.post('/recarga', eFuncionario ,(req, res) => {
         if(!req.body.cpf || typeof req.body.cpf == undefined || req.body.cpf == null){
             erros.push({texto: 'CPF obrigatório'})
         }
-
         if(!req.body.valor || typeof req.body.valor == undefined || req.body.valor == null){
             erros.push({texto: 'Valor obrigatório'})
         }
