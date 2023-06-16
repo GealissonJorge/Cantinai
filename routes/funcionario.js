@@ -85,7 +85,9 @@ router.post('/venda/nova', eFuncionario ,(req, res) => {
         erros.push({texto: 'Prato obrigatório'})
     }
     if(erros.length > 0){
-        res.render('funcionario/venda', {erros: erros})
+        Taxa.findOne({}).then((taxas) => {
+            res.render('funcionario/venda',{erros: erros, taxas: taxas})
+        })
     }else{
         const novaVenda= new Venda({
             valor: req.body.prato*req.body.taxa,
