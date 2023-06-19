@@ -1,9 +1,13 @@
-<h2>Histórico de compras de {{user.nome}}</h2>
+<h2> <img src="/img/historico.png" width="50px"> Histórico de compras de {{user.nome}} </h2>
+<div  style= "text-align:right;" >
+    <a href="/cliente"> <img src="/img/voltar.png" width="50px"> </a>
+</div>
+
 <hr>
 {{#each vendas}}
     <div class="card mt-4">
         <div class="card-body">
-            <h5>Valor da venda:R$ {{valor}}</h5>
+            <h5>Valor da venda: R$ {{valor}}</h5>
             <p>Funcionario: {{funcionario.nome}}</p>
             <p>Data: {{horario}}</p>
             {{#if bebida}}
