@@ -1,9 +1,14 @@
 
-<h3>Bem vindo, {{user.nome}}</h3>
-{{#if cliente}}
-    <p>Saldo na carteira:R$ {{cliente.carteira.saldo}}</p>
-{{/if}}
+<h1>Bem vindo, {{user.nome}}</h1>
 
-<a href="/cliente/historico"><button class="btn btn-primary">Ver Histórico</button></a>
-<a href="/qrcode/leitor"><button class="btn btn-success">Ler Qrcode</button></a>
-<a href="/cliente/cadastro"><button class="btn btn-success">Cadastrar Cliente</button></a>
+
+<div class="infoClient">
+    {{#if cliente}}
+        <h4>  <img src="/img/saldo.png" width="50px"> Saldo na carteira: R$ {{cliente.carteira.saldo}}</h4>
+    {{/if}}
+
+    <a href="/cliente/historico"> <img src="/img/historico.png" width="50px"> <button class="btn btn-primary">Ver Histórico</button></a>
+    <br>
+    <a href="/qrcode/leitor"> <img src="/img/lerqrcode.png" width="50px"> <button class="btn btn-success">Ler Qrcode</button></a>
+    {{!-- <a href="/cliente/cadastro"><button class="btn btn-success">Cadastrar Cliente</button></a> --}}
+</div>
