@@ -520,6 +520,13 @@ router.get('/historico', (req, res) => {
     })
 })
 
+router.get('/relatorio', (req, res) => {
+    Venda.find().populate('cliente').then((vendas)=>{//pegar todas as recargas
+        res.render('admin/relatorio', {vendas: vendas})    
+        
+    })
+})
+
 //adicionar rota para editar um usuario
 
 module.exports = router

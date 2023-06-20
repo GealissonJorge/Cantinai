@@ -2,8 +2,20 @@
     <div class="alert alert-danger">{{texto}}</div>
 {{else}}
 {{/each}}
-<h3>Recarga</h3>
-<div class="card">
+
+    <h3> <img src="/img/recarga.png" width="50px"> Recarga</h3>
+
+{{#if user.eAdmin}}
+<div  style= "text-align:right;" >
+    <a href="/admin"> <img src="/img/voltar.png" width="50px"> </a>
+</div>
+{{else}}
+<div  style= "text-align:right;" >
+    <a href="/funcionario"> <img src="/img/voltar.png" width="50px"> </a>
+</div>
+{{/if}}
+
+<div class="card ">
    <div class="card-body">
     <form action="/funcionario/recarga" method="POST">
     <label for="cpf">CPF</label>

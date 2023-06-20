@@ -2,16 +2,21 @@
     <div class="alert alert-danger">{{texto}}</div>
 {{else}}
 {{/each}}
-<h2>Gerenciar Taxa</h2>
+<h2> <img src="/img/taxa.png" width="50px"> Atualizar Taxa</h2>
+
+<div  style= "text-align:right;" >
+    <a href="/admin"> <img src="/img/voltar.png" width="50px"> </a>
+</div>
+
 {{#each taxas}}
-<h5>A taxa atual é R$ {{taxa}} o quilo</h5>
-<h5>A Bebida atual é R$ {{bebida}}</h5>
-<h5>O refrigerante atual é R$ {{refrigerante}}</h5>
-<h5>O suco atual é R$ {{suco}}</h5>
-<h5>O Água atual é R$ {{agua}}</h5>
+<h6>A taxa atual é R$ {{taxa}} o quilo</h6>
+<h6>A Bebida atual é R$ {{bebida}}</h6>
+<h6>O refrigerante atual é R$ {{refrigerante}}</h6>
+<h6>O suco atual é R$ {{suco}}</h6>
+<h6>O Água atual é R$ {{agua}}</h6>
 <input type="hidden" name="valor" id="valor" value="{{taxa}}">
 {{else}}
-<h5>Nenhuma taxa cadastrada</h5>
+<h6>Nenhuma taxa cadastrada</h6>
 {{/each}}
 <form action="/admin/taxa/nova" method="POST">
     <div class="card">

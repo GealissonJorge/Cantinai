@@ -3,6 +3,18 @@
 {{else}}
 {{/each}}
 
+<h2> <img src="/img/venda.png" width="50px"> Venda iniciada</h2>
+
+{{#if user.eAdmin}}
+<div  style= "text-align:right;" >
+    <a href="/admin"> <img src="/img/voltar.png" width="50px"> </a>
+</div>
+{{else}}
+<div  style= "text-align:right;" >
+    <a href="/funcionario"> <img src="/img/voltar.png" width="50px"> </a>
+</div>
+{{/if}}
+
 <div class="card mt-4 mx-auto " style="width: 30rem">
   <h6 class="card-header">Taxa de R$ {{taxas.taxa}} o quilo</h6>
     <div class="card-body">
@@ -47,7 +59,7 @@
             <option value="0">nenhum produto registrada</option>
             {{/each}}
         </select>
-  <button class="btn btn-success mt-4">Finalizar</button>
+  <button class="btn btn-success mt-4">Finalizar venda</button>
   </form> 
     </div>
       
