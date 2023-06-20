@@ -37,6 +37,10 @@ const Cliente = new Schema({
     eFuncionario:{
         type: Number,
         default: 0
+    },
+    eCliente:{
+        type: Number,
+        default: 1
     }
 })
 mongoose.model('Clientes', Cliente)

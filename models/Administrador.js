@@ -36,6 +36,10 @@ const Administrador = new Schema({
     eFuncionario:{
         type: Number,
         default: 1
+    },
+    eCliente:{
+        type: Number,
+        default: 0
     }
 })
 mongoose.model('Administradores', Administrador)

@@ -1,15 +1,9 @@
-<h2> <img src="/img/taxa.png" width="50px"> Histórico de vendas de {{user.nome}}</h2>
-    
-<div  style= "text-align:right;" >
-    <a href="/admin"> <img src="/img/voltar.png" width="50px"> </a>
-</div>
-
-<hr>
 {{#each vendas}}
     <div class="card mt-4">
         <div class="card-body">
             <h5>Valor da venda:R$ {{valor}}</h5>
             <p>Cliente: {{cliente.nome}}</p>
+            <p>Funcionario: {{funcionario.nome}}</p>
             <p>Data: {{horario}}</p>
             {{#if bebida}}
                 <p>Bebida: Sim</p>

@@ -8,7 +8,9 @@ const Carteira = mongoose.model('Carteiras')
 const bcrypt = require("bcryptjs")
 require('../models/Venda')
 const Venda = mongoose.model('Vendas')
-router.get('/', (req, res) => {
+const {eCliente} = require('../helpers/eCliente')
+
+router.get('/', eCliente ,(req, res) => {
     if(!req.user){
         req.flash('error_msg', 'É necessario estar logado para acessar esta página')
         res.redirect('/')
@@ -120,7 +122,7 @@ router.post('/comprar/:id', (req, res) => {
         console.log(err)
     })
 })
-router.get('/historico', (req, res) => {
+router.get('/historico', eCliente ,(req, res) => {
     Venda.find({cliente: req.user._id}).populate('funcionario').then((vendas)=>{
         res.render('cliente/historico', {vendas: vendas})
     })
