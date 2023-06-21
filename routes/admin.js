@@ -519,7 +519,26 @@ router.get('/historico', (req, res) => {
         
     })
 })
-
+router.post('/historico', (req, res) => {
+    if(req.body.filtro=='data'){
+        Venda.find({funcionario: req.user._id}).populate('cliente').sort({horario: 'desc'}).then((vendas)=>{
+            res.render('admin/historico', {vendas: vendas})    
+            
+        })
+    }
+    if(req.body.filtro=='nome'){
+        Venda.find({funcionario: req.user._id}).populate('cliente').sort({nome: 'desc'}).then((vendas)=>{
+            res.render('admin/historico', {vendas: vendas})    
+            
+        })
+    }
+    if(req.body.filtro=='valor'){
+        Venda.find({funcionario: req.user._id}).populate('cliente').sort({valor: 'desc'}).then((vendas)=>{
+            res.render('admin/historico', {vendas: vendas})    
+            
+        })
+    }
+})
 router.get('/relatorio', (req, res) => {
     Venda.find().populate('cliente').then((vendas)=>{//pegar todas as recargas
         res.render('admin/relatorio', {vendas: vendas})    

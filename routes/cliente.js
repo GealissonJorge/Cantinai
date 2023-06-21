@@ -127,6 +127,25 @@ router.get('/historico', eCliente ,(req, res) => {
         res.render('cliente/historico', {vendas: vendas})
     })
 })
-
+router.post('/historico', (req, res) => {
+    if(req.body.filtro=='data'){
+        Venda.find({cliente: req.user._id}).populate('funcionario').sort({horario: 'desc'}).then((vendas)=>{
+            res.render('cliente/historico', {vendas: vendas})    
+            
+        })
+    }
+    if(req.body.filtro=='nome'){
+        Venda.find({cliente: req.user._id}).populate('funcionario').sort({nome: 'desc'}).then((vendas)=>{
+            res.render('cliente/historico', {vendas: vendas})    
+            
+        })
+    }
+    if(req.body.filtro=='valor'){
+        Venda.find({cliente: req.user._id}).populate('funcionario').sort({valor: 'desc'}).then((vendas)=>{
+            res.render('cliente/historico', {vendas: vendas})    
+            
+        })
+    }
+})
 
 module.exports = router

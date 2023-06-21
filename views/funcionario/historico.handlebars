@@ -3,6 +3,15 @@
     <a href="/funcionario"> <img src="/img/voltar.png" width="50px"> </a>
 </div>
 <hr>
+<form action="/funcionario/historico" method="POST">
+    <label for="filtro">Filtrar por:</label>
+        <select name="filtro" class="custom-select mt-2 form-control w-25" onchange="this.form.submit()">
+            <option value="none">Nenhum</option>
+            <option value="data">Data</option>
+            <option value="nome">Nome</option>
+            <option value="valor">Valor</option>
+    </select>
+</form>
 {{#each vendas}}
     <div class="card mt-4">
         <div class="card-body">
