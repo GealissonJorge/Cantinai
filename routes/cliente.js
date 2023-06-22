@@ -63,7 +63,8 @@ router.post('/cadastro/novo', (req, res) => {
                         email: req.body.email,
                         telefone: req.body.telefone,
                         senha: req.body.senha,
-                        carteira: idcarteira
+                        carteira: idcarteira,
+                        date: Date.now()
                     }) 
                     bcrypt.genSalt(10,(erro,salt)=>{
                         bcrypt.hash(novoCliente.senha,salt,(erro,hash)=>{

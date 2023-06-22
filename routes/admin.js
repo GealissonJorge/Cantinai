@@ -52,7 +52,8 @@ router.post('/produto/nova',eAdmin, (req, res) => {
         const novoProduto = {
             descricao: req.body.descricao,
             quantidade: req.body.qtd,
-            preco: req.body.valor
+            preco: req.body.valor,
+            date: Date.now()
         }
         new Produto(novoProduto).save().then(() => {
             req.flash('success_msg', 'Produto cadastrado com sucesso')
@@ -91,6 +92,7 @@ router.post('/produto/editproduto/:id', eAdmin,(req, res) => {
             produto.descricao = req.body.descricao
             produto.quantidade = req.body.qtd
             produto.preco = req.body.valor
+            produto.date = Date.now()
             produto.save().then(() => {
                 req.flash('success_msg', 'Produto atualizado com sucesso')
                 res.redirect('/admin/produto')
@@ -144,6 +146,7 @@ router.post('/usuarios/editcliente/:id', eAdmin,(req, res) => {
             cliente.nome = req.body.nome
             cliente.email = req.body.email
             cliente.telefone = req.body.telefone
+            cliente.date = Date.now()
             cliente.save().then(() => {
                 req.flash('success_msg', 'Cliente atualizado com sucesso')
                 res.redirect('/admin/clientes')
@@ -233,7 +236,8 @@ router.post('/funcionario/novo', (req, res) => {
             email: req.body.email,
             telefone: req.body.telefone,
             senha: req.body.senha,
-            endereco: req.body.endereco
+            endereco: req.body.endereco,
+            date: Date.now()
         })
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(novoFuncionario.senha, salt, (erro, hash) => {
@@ -292,6 +296,7 @@ router.post('/usuarios/editfuncionario/:id', (req, res) => {
             funcionario.telefone = req.body.telefone
             funcionario.senha = req.body.senha
             funcionario.endereco = req.body.endereco
+            funcionario.date = Date.now()
             bcrypt.genSalt(10, (err, salt) => {
                 bcrypt.hash(funcionario.senha, salt, (erro, hash) => {
                     if(erro){
@@ -361,7 +366,8 @@ router.post('/administrador/novo', (req, res) => {
             email: req.body.email,
             telefone: req.body.telefone,
             senha: req.body.senha,
-            endereco: req.body.endereco
+            endereco: req.body.endereco,
+            date: Date.now()
         })
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(novoAdministrador.senha, salt, (erro, hash) => {
@@ -424,6 +430,7 @@ router.post('/usuarios/editadministrador/:id', (req, res) => {
             administrador.telefone = req.body.telefone
             administrador.senha = req.body.senha
             administrador.endereco = req.body.endereco
+            administrador.date = Date.now()
             bcrypt.genSalt(10, (err, salt) => {
                 bcrypt.hash(administrador.senha, salt, (erro, hash) => {
                     if(erro){

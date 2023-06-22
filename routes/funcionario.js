@@ -111,7 +111,8 @@ router.post('/venda/nova', eFuncionario ,(req, res) => {
                 suco: req.body.suco,
                 refrigerante: req.body.refrigerante,
                 agua: req.body.agua,
-                funcionario: req.user._id
+                funcionario: req.user._id,
+                horario: Date.now()
             })
             novaVenda.save().then(() => {
                 req.flash('success_msg', 'Venda realizada com sucesso')
