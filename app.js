@@ -18,6 +18,7 @@ require("./config/auth")(passport)
 app.use(session({
     secret: 'secret',
     resave: true,
+    cookie: { maxAge: 60000 },
     saveUninitialized: true
 }))
 //passport
