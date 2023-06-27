@@ -17,7 +17,11 @@
     <div class="card mt-4">
         <div class="card-body">
             <h5>Valor da venda: R$ {{valor}}</h5>
-            <p>Funcionario: {{funcionario.nome}}</p>
+            {{#if funcionario.nome}}
+            <p>Funcionário: {{funcionario.nome}}</p>
+            {{else}}
+            <p>Funcionário: Conta admin</p>
+            {{/if}}
             <p>Data: {{horario}}</p>
             {{#if bebida}}
                 <p>Bebida: Sim</p>

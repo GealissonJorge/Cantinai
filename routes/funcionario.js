@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 const {eFuncionario} = require('../helpers/eFuncionario')
+const { route } = require('./qrcode')
 require('../models/Taxa')
 const Taxa = mongoose.model('Taxas')
 require('../models/Venda')
@@ -21,6 +22,9 @@ router.get('/', eFuncionario ,(req, res) => {
 })
 router.get('/recarga', eFuncionario ,(req, res) => {
     res.render('funcionario/recarga')
+})
+router.get('/pagamento',eFuncionario,(req, res) => {
+    res.render('funcionario/pagamento')
 })
 router.post('/recarga', eFuncionario ,(req, res) => {
     Cliente.findOne({cpf: req.body.cpf}).lean().then((cliente)=>{
@@ -64,6 +68,11 @@ router.get('/venda', eFuncionario, (req, res) => {
 })
 router.post('/venda/nova', eFuncionario ,(req, res) => {
     var erros= []
+    if(req.body.pagamento=="on"){
+        req.body.pagamento=1
+    }else{
+        req.body.pagamento=0
+    }
     if(req.body.bebida=="on"){
         req.body.bebida=1
     }else{
@@ -117,17 +126,31 @@ router.post('/venda/nova', eFuncionario ,(req, res) => {
             novaVenda.save().then(() => {
                 req.flash('success_msg', 'Venda realizada com sucesso')
                 //res.redirect('/funcionario/venda')
+                if(req.body.pagamento==0){
+                    Funcionario.findOne({_id: req.user._id}).lean().then((funcionario)=>{
+                        if(!funcionario){
+                            Administrador.findOne({_id: req.user._id}).lean().then((admin)=>{
+                                res.render('./qrcode/qrcode', {novaVenda: novaVenda, funcionario: admin})    
+                            })
+        
+                        }else{
+                            res.render('./qrcode/qrcode', {novaVenda: novaVenda, funcionario: funcionario})
+                        }
+                        
+                    })
+            }else{
                 Funcionario.findOne({_id: req.user._id}).lean().then((funcionario)=>{
                     if(!funcionario){
                         Administrador.findOne({_id: req.user._id}).lean().then((admin)=>{
-                            res.render('./qrcode/qrcode', {novaVenda: novaVenda, funcionario: admin})    
+                            res.render('./funcionario/pagamento', {novaVenda: novaVenda, funcionario: admin})    
                         })
     
                     }else{
-                        res.render('./qrcode/qrcode', {novaVenda: novaVenda, funcionario: funcionario})
+                        res.render('./funcionario/pagamento', {novaVenda: novaVenda, funcionario: funcionario})
                     }
                     
                 })
+            }
                
             }).catch((err) => {
                 console.log(err)
@@ -139,6 +162,68 @@ router.post('/venda/nova', eFuncionario ,(req, res) => {
         
     }  
 })
+router.post('/compra/:id', eFuncionario ,(req, res) => {
+    if(!req.body.cpf || typeof req.body.cpf == undefined || req.body.cpf == null){
+        req.flash('success_msg', 'Compra realizada com sucesso')
+        if(req.user.eAdmin){
+            res.redirect('/admin')
+        }else{
+            res.redirect('/funcionario')
+        }
+    }else{
+        Cliente.findOne({cpf:req.body.cpf}).then((cliente)=>{
+            Venda.findOne({_id: req.params.id}).then((venda)=>{
+                if(cliente){
+                    venda.cliente = cliente._id
+                    venda.save().then(()=>{
+                        req.flash('success_msg', 'Compra realizada com sucesso')
+                        if(req.user.eAdmin){
+                            res.redirect('/admin')
+                        }else{
+                            res.redirect('/funcionario')
+                        }
+                    }).catch(err=>{
+                        console.log(err)
+                        req.flash('error_msg', 'Erro ao salvar cliente na venda')
+                        if(req.user.eAdmin){
+                            res.redirect('/admin')
+                        }else{
+                            res.redirect('/funcionario')
+                        }
+                    })
+                
+                }else{
+                    req.flash('error_msg', 'Cliente não encontrado no sistema, compra finalizada')
+                    if(req.user.eAdmin){
+                        res.redirect('/admin')
+                    }else{
+                        res.redirect('/funcionario')
+                    }
+                }
+                
+            }).catch(err=>{
+                console.log(err)
+                req.flash('error_msg', 'Erro ao salvar')
+                if(req.user.eAdmin){
+                    res.redirect('/admin')
+                }else{
+                    res.redirect('/funcionario')
+                }
+                
+            })
+            
+        }).catch(err=>{
+            req.flash('error_msg', 'Erro ao realizar compra')
+            if(req.user.eAdmin){
+                res.redirect('/admin')
+            }else{
+                res.redirect('/funcionario')
+            }
+        })
+}
+})
+
+
 router.get('/historico', (req, res) => {
     Venda.find({funcionario: req.user._id}).populate('cliente').sort({historico: 'desc'}).then((vendas)=>{
         res.render('funcionario/historico', {vendas: vendas})

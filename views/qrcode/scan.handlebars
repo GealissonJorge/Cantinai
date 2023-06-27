@@ -1,11 +1,13 @@
-<h3>Qr code gerado!</h3>
-<div class="card">
-    <div class="card-body">
+<h3 class="text-center">Qr code gerado!</h3>
+<div class="card mx-auto" style="width: 20rem;">
+    <div class="card-body mx-auto">
         <img src={{src}} alt="QR Code Image" class="center">
     </div>
+    <div class="text-center">
+        {{#if user.eAdmin}}
+        <a href="/admin"><button type="button" class="btn btn-primary mt-4 mb-2">Voltar </button></a>
+        {{else}}
+        <a href="/funcionario"><button type="button" class="btn btn-primary mt-4 mb-2">Voltar </button></a>
+        {{/if}}
+    </div>
 </div>
-{{#if user.eAdmin}}
-<a href="/admin"><button type="button" class="btn btn-primary mt-4">Voltar </button></a>
-{{else}}
-<a href="/funcionario"><button type="button" class="btn btn-primary mt-4">Voltar </button></a>
-{{/if}}

@@ -52,13 +52,19 @@
     </div>
    <label for="produto">Produtos extras:</label>
         <select name="produto" class="custom-select mt-2 form-control w-50" >
-            {{#each produtos}}
             <option value="0">Nenhum</option>
+            {{#each produtos}}
             <option value="{{_id}}">{{descricao}}</option>
             {{else}}
             <option value="0">nenhum produto registrada</option>
             {{/each}}
         </select>
+      <div>
+      <input class="form-check-input from-control mt-4" type="checkbox" name="pagamento" id="pagamento">
+        <label class="form-check-label mt-3" for="pagamento">
+          Pagamento em dinheiro/cartão
+        </label>
+    </div>  
   <button class="btn btn-success mt-4">Finalizar venda</button>
   </form> 
     </div>

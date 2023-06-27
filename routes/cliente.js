@@ -8,6 +8,8 @@ const Carteira = mongoose.model('Carteiras')
 const bcrypt = require("bcryptjs")
 require('../models/Venda')
 const Venda = mongoose.model('Vendas')
+require('../models/Administrador')
+const Administrador = mongoose.model('Administradores')
 const {eCliente} = require('../helpers/eCliente')
 
 router.get('/', eCliente ,(req, res) => {
@@ -106,7 +108,6 @@ router.post('/comprar/:id', (req, res) => {
             Carteira.findOne({_id: cliente.carteira}).then((carteira)=>{
                 carteira.saldo = carteira.saldo - venda.valor
                 venda.save().then(()=>{
-                    
                     carteira.save().then(()=>{
                         req.flash("success_msg","compra realizada")
                         res.redirect("/cliente")
@@ -128,6 +129,7 @@ router.get('/historico', eCliente ,(req, res) => {
         res.render('cliente/historico', {vendas: vendas})
     })
 })
+//filtro da pagina
 router.post('/historico', (req, res) => {
     if(req.body.filtro=='data'){
         Venda.find({cliente: req.user._id}).populate('funcionario').sort({horario: 'desc'}).then((vendas)=>{
