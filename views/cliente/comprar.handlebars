@@ -3,7 +3,11 @@
     <div class="card-body">
         <form action="{{novaVenda.id}}" method="POST">
             <h5>Valor da compra: R${{venda.valor}}</h5>
+            {{#if venda.funcionario.nome}}
             <p>Funcionario: {{venda.funcionario.nome}}</p>
+            {{else}}
+            <p>Funcionario: {{venda.admin.nome}}</p>
+            {{/if}}
             <p>Data: {{venda.horario}}</p>
             {{#if venda.bebida}}
                 <p>Bebida: Sim</p>
