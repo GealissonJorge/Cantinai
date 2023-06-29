@@ -14,10 +14,6 @@ const Venda = new Schema({
         ref: 'Funcionarios',
         required: true
     },
-    bebida:{
-        type: Number,
-        default: 0
-    },
     suco:{
         type: Number,
         default: 0

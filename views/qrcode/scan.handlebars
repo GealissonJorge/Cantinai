@@ -1,13 +1,26 @@
+{{#each erros}}
+    <div class="alert alert-danger">{{texto}}</div>
+{{else}}
+{{/each}}
+<div  style= "text-align:right;" >
+    {{#if user.eAdmin}}
+    <a href="/admin"> <img src="/img/voltar.png" width="50px"> </a>
+    {{else}}
+    <a href="/funcionario"> <img src="/img/voltar.png" width="50px"> </a>
+    {{/if}}
+</div>
+<hr>
 <h3 class="text-center">Qr code gerado!</h3>
+
 <div class="card mx-auto" style="width: 20rem;">
     <div class="card-body mx-auto">
         <img src={{src}} alt="QR Code Image" class="center">
     </div>
     <div class="text-center">
         {{#if user.eAdmin}}
-        <a href="/admin"><button type="button" class="btn btn-primary mt-4 mb-2">Voltar </button></a>
+        <a href="/admin"><button type="button" class="btn btn-primary mt-4 mb-2">Confirmar pagamento</button></a>
         {{else}}
-        <a href="/funcionario"><button type="button" class="btn btn-primary mt-4 mb-2">Voltar </button></a>
+        <a href="/funcionario"><button type="button" class="btn btn-primary mt-4 mb-2">Confirmar pagamento</button></a>
         {{/if}}
     </div>
 </div>

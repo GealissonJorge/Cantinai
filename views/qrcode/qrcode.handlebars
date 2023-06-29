@@ -1,5 +1,13 @@
+{{#each erros}}
+    <div class="alert alert-danger">{{texto}}</div>
+{{else}}
+{{/each}}
 <h3>Finalizar Venda</h3>
-<div class="card mt-4">
+<div  style= "text-align:right;" >
+    <a href="/funcionario/venda"> <img src="/img/voltar.png" width="50px"> </a>
+</div>
+<hr>
+<div class="card mt-2 mx-auto"style="width: 20rem">
     <div class="card-body">
         <form class="form" action="/qrcode/scan/{{novaVenda.id}}" method="POST">
             <h5>Valor: R${{novaVenda.valor}}</h5>
@@ -19,6 +27,5 @@
             {{/if}}
             <button type="submit" class="btn btn-primary" value="Get QR">Finalizar</button>           
         </form>
-        <a href="/funcionario/venda"><button class="btn btn-primary mt-4">Voltar</button></a>
     </div>   
 </div>

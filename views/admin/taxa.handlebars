@@ -8,29 +8,20 @@
     <a href="/admin"> <img src="/img/voltar.png" width="50px"> </a>
 </div>
 
-{{#each taxas}}
-<h6>A taxa atual é R$ {{taxa}} o quilo</h6>
-<h6>A Bebida atual é R$ {{bebida}}</h6>
-<h6>O refrigerante atual é R$ {{refrigerante}}</h6>
-<h6>O suco atual é R$ {{suco}}</h6>
-<h6>O Água atual é R$ {{agua}}</h6>
-<input type="hidden" name="valor" id="valor" value="{{taxa}}">
-{{else}}
-<h6>Nenhuma taxa cadastrada</h6>
-{{/each}}
 <form action="/admin/taxa/nova" method="POST">
-    <div class="card">
+    <div class="card mx-auto" style="width: 20rem;">
         <div class="card-body">
+            {{#each taxas}}
             <label for="taxa">Nova taxa:</label>
-                <input type="number" name="taxa" id="taxa" class="form-control w-25">
-            <label for="bebida">Novo valor para a bebida:</label>
-                <input type="number" name="bebida" id="beida" class="form-control w-25">
+                <input type="number" step="0.01" name="taxa" id="taxa" class="form-control w-50" value="{{taxa}}">
             <label for="refrigerante">Novo valor para refrigerante</label>
-                <input type="number" name="refri" id="refri" class="form-control w-25" >
+                <input type="number" step="0.01" name="refri" id="refri" class="form-control w-50"  value="{{refrigerante}}">
             <label for="suco">Novo valor para suco</label>
-                <input type="number" name="suco" id="suco" class="form-control w-25">
+                <input type="number" step="0.01" name="suco" id="suco" class="form-control w-50" value="{{suco}}">
             <label for="agua">Novo valor para água</label>
-                <input type="number" name="agua" id="agua" class="form-control w-25">
+                <input type="number" step="0.01" name="agua" id="agua" class="form-control w-50" value="{{agua}}">
+            {{else}}
+            {{/each}}    
             <button class="btn btn-success mt-4">Atualizar</button>
         </div>
     </div>

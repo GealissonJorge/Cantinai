@@ -3,7 +3,11 @@
 {{else}}
 {{/each}}
 <h3>Finalizar Venda</h3>
-<div class="card mt-4">
+<div  style= "text-align:right;" >
+    <a href="/funcionario/venda"> <img src="/img/voltar.png" width="50px"> </a>
+</div>
+<hr>
+<div class="card mt-4 mx-auto"style="width: 20rem;">
     <div class="card-body">
         <form class="form" action="/funcionario/compra/{{novaVenda._id}}" method="POST">
             <h5>Valor: R${{novaVenda.valor}}</h5>
@@ -22,9 +26,8 @@
                 <p>Água: Sim</p>
             {{/if}}
             <label for="cpf">CPF cliente (opcional):</label>
-                <input type="text"  name="cpf" id="cpf" placeholder="xxx.xxx.xxx-xx" class="form-control mt-4 mb-4 w-25">
+                <input type="text"  name="cpf" id="cpf" placeholder="xxx.xxx.xxx-xx" class="form-control mt-4 mb-4 w-75">
             <button type="submit" class="btn btn-primary">Finalizar</button>           
         </form>
-        <a href="/funcionario/venda"><button class="btn btn-primary mt-4">Voltar</button></a>
     </div>   
 </div>

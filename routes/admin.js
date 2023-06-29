@@ -479,13 +479,17 @@ router.post('/taxa/nova', (req, res) => {
         erros.push({texto: 'Taxa obrigatória'})
     }
     if(erros.length > 0){
-        res.render('admin/taxa', {erros: erros})
+        Taxa.find().then((taxas) => {
+            res.render('admin/taxa', {erros: erros,taxas: taxas})
+        }).catch((err) => {
+            req.flash('error_msg', 'Erro ao listar taxa')
+            res.redirect('/admin/taxa')
+        })
     }else{
         Taxa.count().then((count) => {
             if(count==0){
                 var novaTaxa = {
                     taxa: req.body.taxa,
-                    bebida: req.body.bebida,
                     refrigerante: req.body.refri,
                     suco: req.body.suco,
                     agua: req.body.agua
@@ -501,7 +505,6 @@ router.post('/taxa/nova', (req, res) => {
             }else{
                 Taxa.findOne({}).then((taxa) => {
                     taxa.taxa= req.body.taxa,
-                    taxa.bebida= req.body.bebida,
                     taxa.refrigerante= req.body.refri,
                     taxa.suco= req.body.suco,
                     taxa.agua= req.body.agua
@@ -509,6 +512,7 @@ router.post('/taxa/nova', (req, res) => {
                         req.flash('success_msg', 'Taxa atualizada com sucesso')
                         res.redirect('/admin/taxa')
                     }).catch((err) => {
+                        console.log(err)
                         req.flash('error_msg', 'Erro ao atualizar taxa')
                         res.redirect('/admin/taxa')
                     })
@@ -547,12 +551,31 @@ router.post('/historico', (req, res) => {
     }
 })
 router.get('/relatorio', (req, res) => {
-    Venda.find().populate('cliente').then((vendas)=>{//pegar todas as recargas
+    Venda.find({}).populate('funcionario').populate('cliente').then((vendas)=>{//pegar todas as recargas
         res.render('admin/relatorio', {vendas: vendas})    
         
     })
 })
-
+router.post('/relatorio', (req, res) => {
+    if(req.body.filtro=='data'){
+        Venda.find({}).populate('funcionario').populate('cliente').sort({horario: 'desc'}).then((vendas)=>{
+            res.render('admin/relatorio', {vendas: vendas})    
+            
+        })
+    }
+    if(req.body.filtro=='nome'){
+        Venda.find({}).populate('funcionario').populate('cliente').sort({nome: 'desc'}).then((vendas)=>{
+            res.render('admin/relatorio', {vendas: vendas})    
+            
+        })
+    }
+    if(req.body.filtro=='valor'){
+        Venda.find({}).populate('funcionario').populate('cliente').sort({valor: 'desc'}).then((vendas)=>{
+            res.render('admin/relatorio', {vendas: vendas})    
+            
+        })
+    }
+})
 //adicionar rota para editar um usuario
 
 module.exports = router

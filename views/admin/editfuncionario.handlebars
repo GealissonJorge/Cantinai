@@ -3,6 +3,11 @@
 {{else}}
 {{/each}}
 <h3>Editar Funcionário</h3>
+<div  style= "text-align:right;" >
+    <a href="/admin"> <img src="/img/voltar.png" width="50px"> </a>
+</div>
+
+<hr>
 <div class="card">
     <div class="card-body">
         <form action="/admin/usuarios/editfuncionario/{{funcionario._id}}" method="POST">
