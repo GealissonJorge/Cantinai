@@ -121,6 +121,7 @@ router.post('/venda/nova', eFuncionario ,(req, res) => {
                 refrigerante: req.body.refrigerante,
                 agua: req.body.agua,
                 funcionario: req.user._id,
+                admin: req.user._id,
                 horario: Date.now()
             })
             novaVenda.save().then(() => {

@@ -551,26 +551,26 @@ router.post('/historico', (req, res) => {
     }
 })
 router.get('/relatorio', (req, res) => {
-    Venda.find({}).populate('funcionario').populate('cliente').then((vendas)=>{//pegar todas as recargas
+    Venda.find({}).populate('funcionario').populate('cliente').populate('admin').then((vendas)=>{//pegar todas as recargas
         res.render('admin/relatorio', {vendas: vendas})    
         
     })
 })
 router.post('/relatorio', (req, res) => {
     if(req.body.filtro=='data'){
-        Venda.find({}).populate('funcionario').populate('cliente').sort({horario: 'desc'}).then((vendas)=>{
+        Venda.find({}).populate('funcionario').populate('cliente').populate('admin').sort({horario: 'desc'}).then((vendas)=>{
             res.render('admin/relatorio', {vendas: vendas})    
             
         })
     }
     if(req.body.filtro=='nome'){
-        Venda.find({}).populate('funcionario').populate('cliente').sort({nome: 'desc'}).then((vendas)=>{
+        Venda.find({}).populate('funcionario').populate('cliente').populate('admin').sort({nome: 'desc'}).then((vendas)=>{
             res.render('admin/relatorio', {vendas: vendas})    
             
         })
     }
     if(req.body.filtro=='valor'){
-        Venda.find({}).populate('funcionario').populate('cliente').sort({valor: 'desc'}).then((vendas)=>{
+        Venda.find({}).populate('funcionario').populate('cliente').populate('admin').sort({valor: 'desc'}).then((vendas)=>{
             res.render('admin/relatorio', {vendas: vendas})    
             
         })

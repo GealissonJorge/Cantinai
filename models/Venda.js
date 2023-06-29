@@ -14,6 +14,10 @@ const Venda = new Schema({
         ref: 'Funcionarios',
         required: true
     },
+    admin:{
+        type: Schema.Types.ObjectId,
+        ref: 'Administradores',
+    },
     suco:{
         type: Number,
         default: 0
